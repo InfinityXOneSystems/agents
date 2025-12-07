@@ -1,0 +1,58 @@
+{
+  "name": "agents",
+  "version": "1.0.0",
+  "description": "Multi-agent orchestration and autonomous research service for Infinity XOS",
+  "main": "dist/server/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node dist/server/index.js",
+    "dev": "tsx watch src/server/index.ts",
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "docker:build": "docker build -t infinity-agents:latest .",
+    "docker:build-dev": "docker build -f Dockerfile.dev -t infinity-agents:dev .",
+    "docker:up": "docker-compose up -d",
+    "docker:up-dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InfinityXOneSystems/agents.git"
+  },
+  "keywords": [
+    "agents",
+    "ai",
+    "autonomous",
+    "research",
+    "orchestration",
+    "multi-agent"
+  ],
+  "author": "Infinity X One Systems",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.10.1",
+    "ajv": "^8.17.1",
+    "axios": "^1.7.9",
+    "commander": "^14.0.2",
+    "express": "^5.2.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
+    "eslint": "^9.39.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6"
+  }
+}
