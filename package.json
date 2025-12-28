@@ -1,0 +1,39 @@
+{
+  "name": "@infinityxone/credential-manager",
+  "version": "1.0.0",
+  "description": "FAANG-standard credential management system",
+  "main": "dist/index.js",
+  "bin": {
+    "credentials": "bin/credentials.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "ingest": "node bin/credentials.js ingest",
+    "sync": "node bin/credentials.js sync",
+    "list": "node bin/credentials.js list",
+    "test": "jest"
+  },
+  "author": "InfinityXOne Systems",
+  "license": "MIT",
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@types/express": "^4.17.17",
+    "@types/jest": "29.5.14",
+    "@types/node": "^25.0.1",
+    "@types/uuid": "^9.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
+}
