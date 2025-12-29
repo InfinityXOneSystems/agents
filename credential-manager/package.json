@@ -1,0 +1,33 @@
+{
+  "name": "infinityxone-credential-manager",
+  "version": "1.0.0",
+  "description": "Centralized credential management system with bidirectional sync between local, Google Cloud Secret Manager, and GitHub",
+  "main": "credentialManager.js",
+  "bin": {
+    "credential-manager": "cli.js"
+  },
+  "scripts": {
+    "start": "node cli.js",
+    "setup": "node cli.js setup",
+    "init": "node cli.js init",
+    "validate": "node cli.js validate"
+  },
+  "keywords": [
+    "credentials",
+    "secret-management",
+    "google-cloud",
+    "github",
+    "encryption",
+    "sync"
+  ],
+  "author": "InfinityXOne Systems",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@google-cloud/secret-manager": "^6.1.1",
+    "@octokit/rest": "^22.0.1",
+    "dotenv": "^17.2.3"
+  }
+}

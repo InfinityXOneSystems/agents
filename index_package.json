@@ -1,0 +1,66 @@
+{
+  "name": "index",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/server/index.js",
+    "dev": "tsx watch src/server/index.ts",
+    "build": "tsc",
+    "cli": "ts-node src/cli/index.ts",
+    "repos:list": "ts-node src/cli/index.ts repos:list",
+    "repos:show": "ts-node src/cli/index.ts repos:show",
+    "actions:list": "ts-node src/cli/index.ts actions:list",
+    "actions:show": "ts-node src/cli/index.ts actions:show",
+    "capabilities:list": "ts-node src/cli/index.ts capabilities:list",
+    "capabilities:show": "ts-node src/cli/index.ts capabilities:show",
+    "generate:openapi": "ts-node src/cli/index.ts generate:openapi",
+    "graph:services": "ts-node src/cli/index.ts graph:services",
+    "validate": "ts-node src/cli/index.ts validate",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "docker:build": "docker build -t infinity-index:latest .",
+    "docker:build-dev": "docker build -f Dockerfile.dev -t infinity-index:dev .",
+    "docker:up": "docker-compose up -d",
+    "docker:up-dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InfinityXOneSystems/index.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/InfinityXOneSystems/index/issues"
+  },
+  "homepage": "https://github.com/InfinityXOneSystems/index#readme",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.10.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "commander": "^14.0.2",
+    "express": "^5.2.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
+    "eslint": "^9.39.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6"
+  }
+}

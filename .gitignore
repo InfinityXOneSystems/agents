@@ -57,3 +57,19 @@ Thumbs.db
 
 # ignore local credentials
 .credentials/
+
+# Ignore sub-repositories to keep root clean
+repos/
+auto_builder/
+frontend/
+credentials/
+vscode-agent-extension/
+cli/
+auto-prompts/
+mcp/
+agents/
+foundation/
+automation/
+generated/
+.infinity/
+
