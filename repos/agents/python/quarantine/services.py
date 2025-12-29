@@ -1,0 +1,6 @@
+﻿from config import MEMORY_GATEWAY_URL, INTELLIGENCE_DATA_URL
+
+SERVICES = {
+    "memory": MEMORY_GATEWAY_URL,
+    "intelligence": INTELLIGENCE_DATA_URL
+}
