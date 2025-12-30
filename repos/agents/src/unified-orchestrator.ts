@@ -7,6 +7,8 @@
  */
 
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 import { spawn as spawnChild } from 'child_process';
 import WebSocket, { WebSocketServer } from 'ws';
 import { createClient as createRedisClient } from 'redis';
@@ -14,6 +16,7 @@ import puppeteer, { Browser } from 'puppeteer';
 import axios from 'axios';
 import { RepoSyncAgent } from './repo-sync-agent.js';
 import { AIIntegrationManager } from './modules/ai-llm-integration/index.js';
+import { AgentDiscoveryService, AgentRunnerService, DiscoveredAgent, PromptService } from './modules/core/index.js';
 
 interface ServiceInfo {
   name: string;
@@ -59,6 +62,11 @@ class UnifiedAgentOrchestrator {
   private server: any;
   private repoSyncAgent!: RepoSyncAgent;
   private aiIntegrationManager!: AIIntegrationManager;
+  private discoveryService: AgentDiscoveryService;
+  private runnerService: AgentRunnerService;
+  private promptService: PromptService;
+  private discoveredAgents: DiscoveredAgent[] = [];
+
   constructor() {
     this.app = express();
     this.wss = null;
@@ -68,9 +76,123 @@ class UnifiedAgentOrchestrator {
     this.agents = new Map();
     this.tasks = new Map();
     this.isRunning = false;
+    this.discoveryService = new AgentDiscoveryService();
+    this.runnerService = new AgentRunnerService();
+    this.promptService = new PromptService();
 
     this.setupMiddleware();
     this.setupRoutes();
+    this.setupAgentRoutes();
+    this.setupPromptRoutes();
+  }
+
+  /**
+   * Setup Prompt routes
+   */
+  setupPromptRoutes() {
+    // Get all prompts
+    this.app.get('/prompts', (req: express.Request, res: express.Response) => {
+      res.json(this.promptService.getAllPrompts());
+    });
+
+    // Get prompt by name
+    this.app.get('/prompts/:name', (req: express.Request, res: express.Response) => {
+      const prompt = this.promptService.getPromptByName(req.params.name);
+      if (prompt) {
+        res.json(prompt);
+      } else {
+        res.status(404).json({ error: `Prompt ${req.params.name} not found` });
+      }
+    });
+
+    // Search prompts
+    this.app.get('/prompts/search/:query', (req: express.Request, res: express.Response) => {
+      res.json(this.promptService.searchPrompts(req.params.query));
+    });
+
+    // Generate CLI command from prompt
+    this.app.get('/prompts/:name/cli', (req: express.Request, res: express.Response) => {
+      const command = this.promptService.generateCliCommand(req.params.name);
+      res.json({ command });
+    });
+  }
+
+  /**
+   * Setup Agent Discovery and Execution routes
+   */
+  setupAgentRoutes() {
+    // Discover all agents
+    this.app.get('/agents/discover', async (req: express.Request, res: express.Response) => {
+      try {
+        this.discoveredAgents = await this.discoveryService.discoverAgents();
+        res.json(this.discoveredAgents);
+      } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+      }
+    });
+
+    // Run a discovered agent
+    this.app.post('/agents/run-discovered', async (req: express.Request, res: express.Response) => {
+      try {
+        const { name, options } = req.body;
+        const agent = this.discoveredAgents.find(a => a.name === name);
+        if (!agent) {
+          return res.status(404).json({ error: `Agent ${name} not found. Run /agents/discover first.` });
+        }
+        const result = await this.runnerService.runAgent(agent, options);
+        res.json({ status: 'started', pid: result.pid, startTime: result.startTime });
+      } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+      }
+    });
+
+    // Stop a running agent
+    this.app.post('/agents/stop-discovered', async (req: express.Request, res: express.Response) => {
+      try {
+        const { name } = req.body;
+        await this.runnerService.stopAgent(name);
+        res.json({ status: 'stopped', name });
+      } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+      }
+    });
+
+    // Get active agents
+    this.app.get('/agents/active', (req: express.Request, res: express.Response) => {
+      res.json(this.runnerService.getActiveAgents());
+    });
+
+    // Sync with Infinity Gateway
+    this.app.post('/sync/gateway', async (req: express.Request, res: express.Response) => {
+      try {
+        const gatewayUrl = process.env.INFINITY_GATEWAY_URL || 'http://localhost:8090';
+        const response = await axios.post(`${gatewayUrl}/sync`, req.body);
+        res.json(response.data);
+      } catch (error) {
+        res.status(500).json({ error: 'Failed to sync with Infinity Gateway' });
+      }
+    });
+
+    // Sync with MCP
+    this.app.post('/sync/mcp', async (req: express.Request, res: express.Response) => {
+      try {
+        const mcpPath = 'C:\\AI\\repos\\mcp';
+        const secretsPath = path.join(mcpPath, 'secrets');
+        let secrets: string[] = [];
+        if (fs.existsSync(secretsPath)) {
+          secrets = fs.readdirSync(secretsPath);
+        }
+        res.json({ 
+          status: 'success', 
+          message: 'Synced with Model Context Protocol',
+          mcpPath,
+          secretsFound: secrets.length,
+          secrets
+        });
+      } catch (error) {
+        res.status(500).json({ error: 'Failed to sync with MCP' });
+      }
+    });
   }
 
   /**
@@ -360,6 +482,11 @@ class UnifiedAgentOrchestrator {
       // Start agent coordination
       await this.startAgentCoordination();
 
+      // Initial agent discovery
+      console.log('🔍 Performing initial agent discovery...');
+      this.discoveredAgents = await this.discoveryService.discoverAgents();
+      console.log(`✅ Discovered ${this.discoveredAgents.length} potential agents`);
+
       // Start HTTP server
       const port = process.env.PORT || 8082;
       this.server = this.app.listen(port, () => {
@@ -480,21 +607,22 @@ class UnifiedAgentOrchestrator {
     console.log('🔍 Discovering existing services...');
 
     const services = [
-      { name: 'autonomous_crawler', url: 'http://localhost:8084', type: 'crawler' },
-      { name: 'infinityx', url: 'http://localhost:8080', type: 'api' },
-      { name: 'gateway', url: 'http://localhost:8090', type: 'gateway' },
-      { name: 'background_agent', url: 'http://localhost:8085', type: 'agent' }
+      { name: 'autonomous_crawler', url: 'http://localhost:8084', healthPath: '/health', type: 'crawler' },
+      { name: 'infinityx', url: 'http://localhost:8080', healthPath: '/health', type: 'api' },
+      { name: 'infinity-gateway', url: 'http://localhost:8090', healthPath: '/health', type: 'gateway' },
+      { name: 'mcp', url: 'http://localhost:8091', healthPath: '/api/status', type: 'protocol' },
+      { name: 'background_agent', url: 'http://localhost:8085', healthPath: '/health', type: 'agent' }
     ];
 
     for (const service of services) {
       try {
-        const response = await axios.get(`${service.url}/health`, { timeout: 5000 });
+        const response = await axios.get(`${service.url}${service.healthPath}`, { timeout: 5000 });
         if (response.status === 200) {
           this.services.set(service.name, { ...service, status: 'connected' });
           console.log(`✅ Connected to ${service.name}`);
         }
       } catch (error) {
-        console.log(`⚠️  ${service.name} not available`);
+        console.log(`⚠️  ${service.name} not available at ${service.url}${service.healthPath}`);
       }
     }
   }

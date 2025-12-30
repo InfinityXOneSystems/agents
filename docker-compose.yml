@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: infinity-agents
     ports:
-      - "3001:3001"
+      - "3001:3000"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
@@ -25,23 +25,23 @@ services:
     networks:
       - infinity-network
 
-  background_agent:
-    build: ../background_agent
-    container_name: background_agent
-    ports:
-      - "8005:8005"
-    environment:
-      - BACKGROUND_AGENT_DATABASE_URL=postgresql+psycopg2://bgagent:${POSTGRES_PASSWORD}@postgres:5432/bgagent
-      - BACKGROUND_AGENT_WORKERS=4
-    restart: unless-stopped
-    networks:
-      - infinity-network
-    secrets:
-      - background_agent_api_key
+  # background_agent:
+  #   build: ../background_agent
+  #   container_name: background_agent
+  #   ports:
+  #     - "8005:8005"
+  #   environment:
+  #     - BACKGROUND_AGENT_DATABASE_URL=postgresql+psycopg2://bgagent:${POSTGRES_PASSWORD}@postgres:5432/bgagent
+  #     - BACKGROUND_AGENT_WORKERS=4
+  #   restart: unless-stopped
+  #   networks:
+  #     - infinity-network
+  #   secrets:
+  #     - background_agent_api_key
 
 networks:
   infinity-network:
     driver: bridge
-secrets:
-  background_agent_api_key:
-    file: ../background_agent/.env.secret.example
+# secrets:
+#   background_agent_api_key:
+#     file: ../background_agent/.env.secret.example

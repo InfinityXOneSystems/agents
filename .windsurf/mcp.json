@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "hostinger": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-hostinger"],
+      "env": {
+        "HOSTINGER_API_KEY": "Kn2PFrgqX7U7uT4uZsdpdQp7KAY94Kq1BvpRNVOj0bbffc63"
+      }
+    }
+  }
+}

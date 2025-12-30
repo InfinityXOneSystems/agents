@@ -1,11 +1,14 @@
 import { MaintenanceAgent } from './agents/maintenance.js';
+import { UnifiedCodingAgent } from './agents/coding-agent';
 
 export class AgentOrchestrator {
   private agents: Map<string, any> = new Map();
   private maintenanceAgent: MaintenanceAgent;
+  private codingAgent: UnifiedCodingAgent;
 
   constructor() {
     this.maintenanceAgent = new MaintenanceAgent(this);
+    this.codingAgent = new UnifiedCodingAgent();
   }
 
   /**
@@ -31,6 +34,9 @@ export class AgentOrchestrator {
     // Start maintenance agent
     await this.maintenanceAgent.start();
 
+    // Start coding agent
+    await this.codingAgent.start();
+
     // Start other agents
     for (const [name, agent] of this.agents) {
       if (agent.start) {
@@ -50,6 +56,9 @@ export class AgentOrchestrator {
     // Stop maintenance agent
     await this.maintenanceAgent.stop();
 
+    // Stop coding agent
+    this.codingAgent.stop();
+
     // Stop other agents
     for (const [name, agent] of this.agents) {
       if (agent.stop) {
@@ -61,13 +70,16 @@ export class AgentOrchestrator {
   }
 
   /**
-   * Get system status
+   * Generate code using the unified coding agent
    */
-  getStatus(): any {
-    return {
-      maintenance: this.maintenanceAgent ? 'running' : 'stopped',
-      agents: Array.from(this.agents.keys()),
-      timestamp: new Date().toISOString()
-    };
+  async generateCode(specification: string): Promise<any> {
+    return await this.codingAgent.generateCode(specification);
+  }
+
+  /**
+   * Get coding agent status
+   */
+  getCodingStatus(): any {
+    return this.codingAgent ? this.codingAgent.getStatus() : { active: false };
   }
 }

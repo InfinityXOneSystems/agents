@@ -115,3 +115,7 @@ export class BaseModule implements AgentModule {
     throw new Error(`Task ${taskName} not implemented in ${this.name}`);
   }
 }
+export * from './agent-discovery.js';
+export * from './agent-runner.js';
+export * from './registry.js';
+export * from './prompt-service.js';
