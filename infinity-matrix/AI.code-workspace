@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Repos"
+		},
+		{
+			"path": "../repos"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"powershell.cwd": "Repos",
+		"DockerRun.DisableDockerrc": true
+	}
+}
