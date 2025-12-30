@@ -1,0 +1,83 @@
+{
+  "name": "infinity-matrix",
+  "displayName": "Infinity-Matrix",
+  "description": "Autonomous agent orchestration platform for VS Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:infinity-matrix.showDashboard",
+    "onView:infinity-matrix.agents"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "infinity-matrix.showDashboard",
+        "title": "Show Infinity-Matrix Dashboard"
+      },
+      {
+        "command": "infinity-matrix.startAgent",
+        "title": "Start Agent"
+      },
+      {
+        "command": "infinity-matrix.stopAgent",
+        "title": "Stop Agent"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "infinity-matrix.agents",
+          "name": "Infinity-Matrix Agents",
+          "icon": "$(robot)",
+          "contextualTitle": "Infinity-Matrix"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "infinity-matrix.showDashboard",
+          "when": "view == infinity-matrix.agents",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "infinity-matrix.startAgent",
+          "when": "view == infinity-matrix.agents && viewItem == agent",
+          "group": "inline"
+        },
+        {
+          "command": "infinity-matrix.stopAgent",
+          "when": "view == infinity-matrix.agents && viewItem == runningAgent",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "eslint": "^8.34.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.5",
+    "@vscode/test-electron": "^2.2.3"
+  }
+}
