@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - API_GATEWAY_URL=http://localhost:8000
+      - LOG_LEVEL=INFO
+    depends_on:
+      - setup-env
+
+  setup-env:
+    build:
+      context: .
+      dockerfile: Dockerfile.setup
+    environment:
+      - API_GATEWAY_URL=http://api-gateway:8000
+      - LOG_LEVEL=INFO
+
+  # Add more services as needed
