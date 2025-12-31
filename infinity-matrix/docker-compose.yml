@@ -21,4 +21,23 @@ services:
       - API_GATEWAY_URL=http://api-gateway:8000
       - LOG_LEVEL=INFO
 
-  # Add more services as needed
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  crawler:
+    build:
+      context: .
+      dockerfile: ai_stack/crawler_scraper/Dockerfile
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - API_GATEWAY_URL=http://api-gateway:8000
+    depends_on:
+      - ollama
+      - api-gateway
+
+volumes:
+  ollama_data:
