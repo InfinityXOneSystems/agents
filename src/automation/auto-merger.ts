@@ -71,9 +71,9 @@ export class AutoMerger {
           ref: pr.base.ref,
           sha: pr.base.sha,
         },
-        mergeable: pr.mergeable,
-        mergeable_state: pr.mergeable_state || 'unknown',
-        merged: pr.merged || false,
+        mergeable: null, // Will be fetched when processing
+        mergeable_state: 'unknown',
+        merged: false,
         draft: pr.draft || false,
         labels: pr.labels.map((label) => label.name || ''),
         created_at: pr.created_at,
@@ -86,6 +86,26 @@ export class AutoMerger {
         error.message
       );
       return [];
+    }
+  }
+
+  private async getPRDetails(
+    repo: string,
+    prNumber: number
+  ): Promise<{ mergeable: boolean | null } | null> {
+    try {
+      const { data: pr } = await this.octokit.pulls.get({
+        owner: this.config.organization,
+        repo,
+        pull_number: prNumber,
+      });
+      return { mergeable: pr.mergeable };
+    } catch (error: any) {
+      console.error(
+        `Error fetching PR details for #${prNumber} in ${repo}:`,
+        error.message
+      );
+      return null;
     }
   }
 
@@ -121,8 +141,9 @@ export class AutoMerger {
       };
     }
 
-    // Check if PR is mergeable
-    if (pr.mergeable === false) {
+    // Fetch detailed PR info to get mergeable status
+    const detailedPr = await this.getPRDetails(repo, pr.number);
+    if (detailedPr && detailedPr.mergeable === false) {
       return {
         success: false,
         prNumber: pr.number,

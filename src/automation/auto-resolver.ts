@@ -64,7 +64,7 @@ export class AutoResolver {
         .map((issue) => ({
           number: issue.number,
           title: issue.title,
-          body: issue.body,
+          body: issue.body || null,
           state: issue.state as 'open' | 'closed',
           labels: issue.labels.map((label) =>
             typeof label === 'string' ? label : label.name || ''
