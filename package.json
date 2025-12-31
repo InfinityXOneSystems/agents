@@ -4,14 +4,18 @@
   "description": "FAANG-standard credential management system",
   "main": "dist/index.js",
   "bin": {
-    "credentials": "bin/credentials.js"
+    "credentials": "bin/credentials.js",
+    "auto-ops": "dist/automation/auto-ops-cli.js"
   },
   "scripts": {
     "build": "tsc",
     "ingest": "node bin/credentials.js ingest",
     "sync": "node bin/credentials.js sync",
     "list": "node bin/credentials.js list",
-    "test": "jest"
+    "test": "jest",
+    "auto-ops": "node dist/automation/auto-ops-cli.js",
+    "auto-resolve": "node dist/automation/auto-ops-cli.js resolve",
+    "auto-merge": "node dist/automation/auto-ops-cli.js merge"
   },
   "author": "InfinityXOne Systems",
   "license": "MIT",
@@ -19,7 +23,9 @@
   "type": "commonjs",
   "dependencies": {
     "express": "^4.18.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "@octokit/rest": "^20.0.2",
+    "commander": "^11.1.0"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",

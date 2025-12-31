@@ -69,7 +69,9 @@ auto-prompts/
 mcp/
 agents/
 foundation/
-automation/
 generated/
 .infinity/
+
+# Allow src/automation but ignore root automation
+/automation/
 
