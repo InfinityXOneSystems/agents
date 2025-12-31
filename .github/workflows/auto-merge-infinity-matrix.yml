@@ -37,7 +37,17 @@ jobs:
           echo "Enabling auto-merge for PR..."
           PR_NUM="${{ github.event.pull_request.number }}"
           REPO="${{ github.repository }}"
-          gh pr merge "$PR_NUM" --auto --squash --repo "$REPO" || true
+          if gh pr merge "$PR_NUM" --auto --squash --repo "$REPO"; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Auto-merge enabled successfully"
+          else
+            EXIT_CODE=$?
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Auto-merge could not be enabled"
+            echo "Exit code: $EXIT_CODE"
+            echo "This may be due to branch protection rules"
+            echo "or other restrictions"
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
