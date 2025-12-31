@@ -8,6 +8,10 @@ class GitHubAgent:
     def get_repos(self):
         return [{"name": "repo1"}, {"name": "repo2"}]
 
+    def create_repo(self, repo_name: str) -> dict:
+        """Create a new repository."""
+        return {"name": "new_repo", "id": 123}
+
     def authenticate_with_app(self):
         print("Authenticating with GitHub App...")
         # Mock authentication logic

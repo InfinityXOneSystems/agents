@@ -6,9 +6,9 @@ Autonomously integrates and manages all platforms: GitHub, Firebase, Google Clou
 
 import time
 import logging
-from pathlib import Path
 from threading import Thread
 import sys
+from typing import Dict, Any
 
 # Add ai_stack to Python path
 sys.path.append(r'c:\AI\infinity-matrix\ai_stack')
@@ -23,7 +23,7 @@ logging.basicConfig(filename=r'C:\AI\credentials\integration.log', level=logging
 
 class MasterIntegrator:
     def __init__(self):
-        self.agents = {}
+        self.agents: Dict[str, Any] = {}
         self.load_agents()
 
     def load_agents(self):
@@ -63,10 +63,10 @@ class MasterIntegrator:
                 syncer.sync_repo(repo['name'])
                 logging.info(f"Synced repo {repo['name']}")
 
-    def backup_to_firebase(self):
+    def backup_to_firebase(self) -> None:
         """Backup data to Firebase."""
         if 'firebase' in self.agents:
-            data = {"backup": "data", "timestamp": time.time()}
+            data: Dict[str, Any] = {"backup": "data", "timestamp": time.time()}
             doc_id = self.agents['firebase'].add_document('backups', data)
             logging.info(f"Backup created: {doc_id}")
 

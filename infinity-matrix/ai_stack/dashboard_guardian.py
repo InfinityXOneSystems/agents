@@ -33,7 +33,7 @@ class DashboardGuardian:
                 # For now, assume problems if validation fails
                 try:
                     self.validation_agent.validate_repo(repo_dir)
-                except:
+                except Exception:
                     problems += 1
         self.problems_count = problems
         return problems

@@ -34,7 +34,7 @@ def implement_system():
     try:
         subprocess.run(['icacls', str(CREDENTIALS_DIR), '/inheritance:r', '/grant:r', f'{os.getlogin()}:(OI)(CI)F',
                        '/grant:r', 'SYSTEM:(OI)(CI)F'], check=True)
-    except:
+    except Exception:
         logging.warning("Permissions set partially")
 
     # Create .gitignore

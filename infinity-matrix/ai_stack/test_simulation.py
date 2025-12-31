@@ -8,6 +8,7 @@ import time
 import json
 import logging
 from unittest.mock import patch, MagicMock
+from pathlib import Path
 from typing import Any, List
 
 import sys
@@ -124,7 +125,7 @@ class SimulationTest:
         }
         with patch('google_cloud.google_cloud_agent.GoogleCloudAgent.load_creds', return_value=mock_creds), \
              patch('google.oauth2.service_account.Credentials.from_service_account_info'), \
-        with patch('google.cloud.storage.Client') as mock_storage, patch('google.cloud.firestore.Client') as mock_firestore:
+             patch('google.cloud.storage.Client') as mock_storage, patch('google.cloud.firestore.Client') as mock_firestore:
             mock_storage.return_value.bucket.return_value.blob.return_value.upload_from_filename.return_value = None
             mock_storage.return_value.bucket.return_value.blob.return_value.public_url = 'https://mock.url'
 
@@ -214,7 +215,7 @@ if __name__ == "__main__":
 import pytest
 
 @pytest.fixture
-def simulation_test() -> 'SimulationTest':
+def simulation_test():
     return SimulationTest()
 
 @pytest.mark.parametrize("agent_name, test_func", [
@@ -224,7 +225,7 @@ def simulation_test() -> 'SimulationTest':
     ("Hostinger", SimulationTest.test_hostinger_agent),
     ("Master Integrator", SimulationTest.test_master_integrator),
 ])
-def test_agent(agent_name: str, test_func: Any, simulation_test: 'SimulationTest') -> None:
+def test_agent(agent_name, test_func, simulation_test):
     try:
         test_func(simulation_test)
     except Exception as e:

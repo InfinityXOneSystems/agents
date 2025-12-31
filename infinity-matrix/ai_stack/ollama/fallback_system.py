@@ -2,6 +2,7 @@
 """Fallback System - Auto-switch to local when cloud limited"""
 import requests
 import logging
+from typing import Optional, Any, Dict
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('Fallback')
@@ -9,12 +10,12 @@ logger = logging.getLogger('Fallback')
 class FallbackSystem:
     """Intelligent cloud/local fallback"""
     
-    def __init__(self, ollama_manager, vertex_manager=None):
+    def __init__(self, ollama_manager: Any, vertex_manager: Optional[Any] = None) -> None:
         self.ollama = ollama_manager
         self.vertex = vertex_manager
-        self.stats = {'ollama': 0, 'vertex': 0, 'fallbacks': 0}
+        self.stats: Dict[str, int] = {'ollama': 0, 'vertex': 0, 'fallbacks': 0}
     
-    def check_github_rate_limit(self):
+    def check_github_rate_limit(self) -> bool:
         """Check if GitHub rate limited"""
         try:
             r = requests.get("https://api.github.com/rate_limit", timeout=2)
@@ -23,16 +24,16 @@ class FallbackSystem:
                 if remaining < 10:
                     logger.warning("GitHub rate limit approaching - using Ollama")
                     return True
-        except:
+        except Exception:
             pass
         return False
     
-    def generate_with_fallback(self, prompt, prefer_local=False, **kwargs):
+    def generate_with_fallback(self, prompt: str, prefer_local: bool = False, **kwargs: Any) -> Dict[str, Any]:
         """Generate with automatic fallback"""
         # Use local if preferred or rate limited
         if prefer_local or self.check_github_rate_limit():
             result = self.ollama.generate(prompt, **kwargs)
-            if result['success']:
+            if result.get('success'):
                 self.stats['ollama'] += 1
                 result['provider'] = 'ollama_local'
                 return result
@@ -48,17 +49,17 @@ class FallbackSystem:
                         'response': result['text'],
                         'provider': 'vertex_ai'
                     }
-            except:
+            except Exception:
                 pass
         
         # Fallback to Ollama
         result = self.ollama.generate(prompt, **kwargs)
-        if result['success']:
+        if result.get('success'):
             self.stats['fallbacks'] += 1
             result['provider'] = 'ollama_fallback'
         return result
     
-    def analyze_content_with_fallback(self, content, task="summarize", prefer_local=True):
+    def analyze_content_with_fallback(self, content: str, task: str = "summarize", prefer_local: bool = True) -> Dict[str, Any]:
         """Analyze scraped content with fallback"""
         logger.info(f"Analyzing {len(content)} chars - Task: {task}")
         
@@ -71,7 +72,7 @@ class FallbackSystem:
         # Fallback
         return self.generate_with_fallback(f"Task: {task}\n\n{content}")
     
-    def get_stats(self):
+    def get_stats(self) -> Dict[str, Any]:
         """Get usage statistics"""
         return {
             **self.stats,
