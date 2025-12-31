@@ -8,6 +8,10 @@ import time
 import logging
 from pathlib import Path
 from threading import Thread
+import sys
+
+# Add ai_stack to Python path
+sys.path.append(r'c:\AI\infinity-matrix\ai_stack')
 
 # Import agents
 from github.github_agent import GitHubAgent

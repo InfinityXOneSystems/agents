@@ -7,48 +7,50 @@ Starts all credential and integration agents in background.
 import subprocess
 import time
 import logging
+import os
 
 logging.basicConfig(filename=r'C:\AI\credentials\launch.log', level=logging.INFO)
 
+def check_process_running(process_name):
+    """Check if a process is running."""
+    try:
+        result = subprocess.run(['tasklist'], capture_output=True, text=True)
+        return process_name in result.stdout
+    except Exception as e:
+        logging.error(f"Failed to check process: {e}")
+        return False
+
+def launch_with_health_check(command, process_name, retries=3):
+    """Launch a process with health checks and retries."""
+    for attempt in range(retries):
+        try:
+            subprocess.Popen(command)
+            time.sleep(5)  # Allow time for the process to start
+            if check_process_running(process_name):
+                logging.info(f"{process_name} launched successfully")
+                print(f"✅ {process_name} launched successfully")
+                return
+            else:
+                logging.warning(f"{process_name} not running. Retrying...")
+        except Exception as e:
+            logging.error(f"Failed to launch {process_name}: {e}")
+    print(f"❌ Failed to launch {process_name} after {retries} attempts")
+
 def launch_daemon():
     """Launch credential daemon."""
-    try:
-        subprocess.Popen(['python', r'C:\AI\credentials\credential_daemon.py'])
-        logging.info("Credential Daemon launched")
-        print("✅ Credential Daemon launched")
-    except Exception as e:
-        logging.error(f"Failed to launch daemon: {e}")
-        print(f"❌ Daemon launch failed: {e}")
+    launch_with_health_check(['python', r'C:\AI\credentials\credential_daemon.py'], "credential_daemon.py")
 
 def launch_integrator():
     """Launch master integrator."""
-    try:
-        subprocess.Popen(['python', r'C:\AI\credentials\master_integrator.py'])
-        logging.info("Master Integrator launched")
-        print("✅ Master Integrator launched")
-    except Exception as e:
-        logging.error(f"Failed to launch integrator: {e}")
-        print(f"❌ Integrator launch failed: {e}")
+    launch_with_health_check(['python', r'C:\AI\credentials\master_integrator.py'], "master_integrator.py")
 
 def launch_repo_sync():
     """Launch repo sync agent."""
-    try:
-        subprocess.Popen(['python', r'C:\AI\credentials\repo_sync_agent.py'])
-        logging.info("Repo Sync Agent launched")
-        print("✅ Repo Sync Agent launched")
-    except Exception as e:
-        logging.error(f"Failed to launch repo sync: {e}")
-        print(f"❌ Repo Sync launch failed: {e}")
+    launch_with_health_check(['python', r'C:\AI\credentials\repo_sync_agent.py'], "repo_sync_agent.py")
 
 def launch_tester():
     """Launch background tester."""
-    try:
-        subprocess.Popen(['python', r'C:\AI\credentials\background_tester.py'])
-        logging.info("Background Tester launched")
-        print("✅ Background Tester launched")
-    except Exception as e:
-        logging.error(f"Failed to launch tester: {e}")
-        print(f"❌ Tester launch failed: {e}")
+    launch_with_health_check(['python', r'C:\AI\credentials\background_tester.py'], "background_tester.py")
 
 if __name__ == "__main__":
     print("Launching all agents...")

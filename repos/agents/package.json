@@ -5,7 +5,8 @@
   "description": "Automated AI Agent Ecosystem with 24/7 maintenance and sync capabilities",
   "main": "dist/index.js",
   "bin": {
-    "agents": "dist/cli.js"
+    "agents": "dist/cli.js",
+    "auto-ops": "dist/agents/automation/auto-ops-cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -21,7 +22,10 @@
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "clean": "rm -rf dist",
-    "module-status": "node -e \"require('./dist/modules').getModuleRegistry().getAllStatuses().then(s => console.table(s))\""
+    "module-status": "node -e \"require('./dist/modules').getModuleRegistry().getAllStatuses().then(s => console.table(s))\"",
+    "auto-ops": "node dist/agents/automation/auto-ops-cli.js",
+    "auto-resolve": "node dist/agents/automation/auto-ops-cli.js resolve",
+    "auto-merge": "node dist/agents/automation/auto-ops-cli.js merge"
   },
   "keywords": [
     "ai",
