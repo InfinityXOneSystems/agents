@@ -1,0 +1,14 @@
+{
+  "name": "infinity-matrix",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "moduleDirectories": ["node_modules", "auto_builder/shared_components"]
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
