@@ -1,0 +1,314 @@
+# Cloud Run Configuration for Infinity-Matrix System
+# 
+# This configuration file specifies how the system should be deployed
+# on Google Cloud Run for production use.
+
+## Backend Service Configuration
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: infinity-orchestration
+  namespace: default
+
+spec:
+  # Cloud Run specific settings (via deployment annotations)
+  annotations:
+    cloud.google.com/service-account: infinity-backend@PROJECT_ID.iam.gserviceaccount.com
+    cloud.google.com/min-instances: "1"
+    cloud.google.com/max-instances: "100"
+    cloud.google.com/timeout-seconds: "3600"
+
+  # Container configuration
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "100"
+    
+    spec:
+      # Container resource limits
+      containers:
+      - name: orchestration
+        image: gcr.io/PROJECT_ID/infinity-orchestration:latest
+        
+        # Port configuration
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        
+        # Environment variables for production
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8080"
+        - name: GOOGLE_CLOUD_PROJECT
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: LOG_LEVEL
+          value: "info"
+        - name: OLLAMA_FALLBACK_ENABLED
+          value: "true"
+        - name: OLLAMA_HOST
+          value: "https://ollama.infinityxai.com"
+        
+        # Health checks for Cloud Run
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 2
+        
+        # Resource requests and limits
+        resources:
+          requests:
+            cpu: "1"
+            memory: "1Gi"
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+        
+        # Security context
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      
+      # Service account
+      serviceAccountName: infinity-backend
+      
+      # Restart policy
+      restartPolicy: Always
+      
+      # Timeout
+      timeoutSeconds: 3600
+
+---
+
+## Frontend Service Configuration
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: infinity-frontend
+  namespace: default
+
+spec:
+  annotations:
+    cloud.google.com/min-instances: "2"
+    cloud.google.com/max-instances: "50"
+    cloud.google.com/timeout-seconds: "300"
+
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "2"
+        autoscaling.knative.dev/maxScale: "50"
+    
+    spec:
+      containers:
+      - name: frontend
+        image: gcr.io/PROJECT_ID/infinity-frontend:latest
+        
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8080"
+        - name: VITE_API_URL
+          value: "https://api.infinityxai.com"
+        - name: VITE_OLLAMA_HOST
+          value: "https://ollama.infinityxai.com"
+        - name: VITE_OLLAMA_ENABLED
+          value: "true"
+        
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 2
+        
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      
+      restartPolicy: Always
+      timeoutSeconds: 300
+
+---
+
+## Monitoring and Logging Configuration
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: infinity-services
+  namespace: default
+
+spec:
+  selector:
+    matchLabels:
+      app: infinity-matrix
+  
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+
+---
+
+## Network Policy (for security)
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: infinity-network-policy
+  namespace: default
+
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: default
+    - podSelector:
+        matchLabels:
+          role: frontend
+    ports:
+    - protocol: TCP
+      port: 8080
+  
+  egress:
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+  - to:
+    - podSelector:
+        matchLabels:
+          role: backend
+    ports:
+    - protocol: TCP
+      port: 8080
+
+---
+
+## Configuration for Cloud Run Specific Features
+
+# Auto-scaling configuration
+apiVersion: autoscaling.knative.dev/v1alpha1
+kind: PodAutoscaler
+metadata:
+  name: infinity-orchestration-scaler
+  namespace: default
+
+spec:
+  scaleTargetRef:
+    name: infinity-orchestration
+  
+  minReplicas: 1
+  maxReplicas: 100
+  
+  # Scale based on CPU utilization
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+  
+  # Scale based on requests per second
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+
+## Ingress Configuration (if using Cloud Load Balancer)
+
+apiVersion: networking.gke.io/v1
+kind: ServicePolicy
+metadata:
+  name: infinity-ingress-policy
+  namespace: default
+
+spec:
+  targetRef:
+    group: ""
+    kind: Service
+    name: infinity-frontend
+  
+  accessLogs:
+    enabled: true
+    provider: gcp
+  
+  # Security headers
+  headers:
+    request:
+      set:
+        X-Frame-Options: "DENY"
+        X-Content-Type-Options: "nosniff"
+        X-XSS-Protection: "1; mode=block"
+    response:
+      set:
+        Strict-Transport-Security: "max-age=31536000; includeSubDomains"

@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-12-31T15:51:23.007203",
+  "environment": "local",
+  "tests": {
+    "Frontend Structure": {
+      "Structure": {
+        "status": "PASS",
+        "message": "Frontend structure valid"
+      },
+      "Dependencies": {
+        "status": "PASS",
+        "message": "All frontend dependencies installed"
+      },
+      "CloudAIPage": {
+        "status": "PASS",
+        "message": "CloudAIPage structure valid"
+      },
+      "OllamaClient": {
+        "status": "PASS",
+        "message": "Ollama client library valid"
+      },
+      "Environment": {
+        "status": "PASS",
+        "message": "Frontend environment configured"
+      }
+    },
+    "Backend Structure": {
+      "Structure": {
+        "status": "PASS",
+        "message": "Backend structure valid"
+      },
+      "Dependencies": {
+        "status": "FAIL",
+        "message": "Missing packages: express, axios, dotenv, ws"
+      },
+      "Compilation": {
+        "status": "FAIL",
+        "message": "'charmap' codec can't decode byte 0x8d in position 17152: character maps to <undefined>"
+      },
+      "Environment": {
+        "status": "PASS",
+        "message": "No .env required (using defaults)"
+      }
+    },
+    "Integration": {
+      "API Endpoints": {
+        "status": "PASS",
+        "message": "Accessible: /health, /cloud/health, /cloud/models"
+      },
+      "Vertex AI Config": {
+        "status": "FAIL",
+        "message": "Credentials file not found: C:\\AI\\repos\\.vscode\\.credentials\\google\\workspace-sa.json"
+      },
+      "Ollama Connectivity": {
+        "status": "PASS",
+        "message": "Ollama accessible at http://localhost:11434"
+      }
+    },
+    "Cloud Deployment": {
+      "Production Config": {
+        "status": "PASS",
+        "message": "Production configuration valid"
+      },
+      "Docker Setup": {
+        "status": "PASS",
+        "message": "Docker configuration present"
+      },
+      "Cloud Readiness": {
+        "status": "PASS",
+        "message": "Ready: 3/4 | Pending: Frontend dist built"
+      }
+    }
+  },
+  "summary": {
+    "total_tests": 15,
+    "passed": 12,
+    "failed": 3,
+    "percentage": 80.0
+  }
+}

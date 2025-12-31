@@ -18,7 +18,7 @@ import traceback
 class SystemTester:
     def __init__(self):
         self.base_dir = Path("c:\\AI\\infinity-matrix")
-        self.frontend_dir = self.base_dir / "frontend_stack" / "frontend"
+        self.frontend_dir = self.base_dir / "frontend"
         self.orchestration_dir = self.base_dir / "orchestration"
         self.results = {
             "timestamp": datetime.now().isoformat(),
@@ -38,19 +38,15 @@ class SystemTester:
         """Log messages with colors"""
         timestamp = datetime.now().strftime("%H:%M:%S")
         if level == "SUCCESS":
-            color = self.colors['GREEN']
-            symbol = "✓"
+            symbol = "[PASS]"
         elif level == "ERROR":
-            color = self.colors['RED']
-            symbol = "✗"
+            symbol = "[FAIL]"
         elif level == "WARNING":
-            color = self.colors['YELLOW']
-            symbol = "⚠"
+            symbol = "[WARN]"
         else:
-            color = self.colors['BLUE']
-            symbol = "•"
+            symbol = "[INFO]"
         
-        print(f"{color}[{timestamp}] {symbol} {message}{self.colors['END']}")
+        print(f"[{timestamp}] {symbol} {message}")
     
     # ========== FRONTEND TESTS ==========
     def test_frontend_structure(self) -> Tuple[bool, str]:

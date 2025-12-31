@@ -4,8 +4,8 @@
  */
 
 import express, { Request, Response, NextFunction } from "express";
-import { AgentOrchestrator } from "../agents/orchestrator.js";
-import { ServiceHealth } from "../types/index.js";
+import { AgentOrchestrator } from "../agents/orchestrator";
+import { ServiceHealth } from "../types/index";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
