@@ -1,0 +1,14 @@
+﻿cmd : [31;1mGet-Content: [0mC:\AI\repos\memory-gateway\platform-validator.ps1:48[0m
+At line:6 char:12
++     $out = cmd /c "pwsh -NoProfile -ExecutionPolicy Bypass -File `"$v ...
++            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([31;1mGet-Cont...ator.ps1:48[0m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[31;1m[0m[36;1mLine |[0m
+[31;1m[0m[36;1m[36;1m  48 | [0m         $c = [36;1mGet-Content $_.FullName -Raw[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mUnable to get content because it is 
+a directory: 'C:\AI\repos\memory-gateway\.infinity\quarantine\add to[0m
+[31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mmain.py'. Please use 
+'Get-ChildItem' instead.[0m

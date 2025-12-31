@@ -1,0 +1,674 @@
+{
+    "version":  "v1.0.0",
+    "updated_at":  "2025-12-18T18:28:16.2881791-05:00",
+    "identity":  {
+                     "user":  {
+                                  "name":  "Neo",
+                                  "role":  "Founder, Architect, Final Authority"
+                              },
+                     "ai":  {
+                                "name":  "Echo",
+                                "role":  "Master Systems Architect, Autonomous Operator"
+                            }
+                 },
+    "platform":  {
+                     "execution":  {
+                                       "gcp_region":  "us-east1"
+                                   },
+                     "local":  {
+                                   "machine":  "JARVIS-COMMAND",
+                                   "user":  "JARVIS"
+                               }
+                 },
+    "services":  {
+                     "cloud_run":  {
+                                       "orchestrator_url":  "https://orchestrator-896380409704.us-east1.run.app",
+                                       "crawler_url":  "https://crawler-896380409704.us-east1.run.app"
+                                   }
+                 },
+    "inventory":  {
+                      "repos":  [
+                                    {
+                                        "name":  "agents",
+                                        "path":  "C:\\AI\\repos\\agents",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "agent_communication",
+                                        "path":  "C:\\AI\\repos\\agent_communication",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "agent_intelligence",
+                                        "path":  "C:\\AI\\repos\\agent_intelligence",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "analytics",
+                                        "path":  "C:\\AI\\repos\\analytics",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "auto-templates",
+                                        "path":  "C:\\AI\\repos\\auto-templates",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "automation",
+                                        "path":  "C:\\AI\\repos\\automation",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "autonomous_builder",
+                                        "path":  "C:\\AI\\repos\\autonomous_builder",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "auto_builder",
+                                        "path":  "C:\\AI\\repos\\auto_builder",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "auto_templates",
+                                        "path":  "C:\\AI\\repos\\auto_templates",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "bootstrap",
+                                        "path":  "C:\\AI\\repos\\bootstrap",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "Chat-intelligence",
+                                        "path":  "C:\\AI\\repos\\Chat-intelligence",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "codegen",
+                                        "path":  "C:\\AI\\repos\\codegen",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "crawler_scraper",
+                                        "path":  "C:\\AI\\repos\\crawler_scraper",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "devtools",
+                                        "path":  "C:\\AI\\repos\\devtools",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "docker_llm",
+                                        "path":  "C:\\AI\\repos\\docker_llm",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "docs",
+                                        "path":  "C:\\AI\\repos\\docs",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "doc_evolution_system",
+                                        "path":  "C:\\AI\\repos\\doc_evolution_system",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "enterprise",
+                                        "path":  "C:\\AI\\repos\\enterprise",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "evaluation",
+                                        "path":  "C:\\AI\\repos\\evaluation",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "foundation",
+                                        "path":  "C:\\AI\\repos\\foundation",
+                                        "branch":  "master"
+                                    },
+                                    {
+                                        "name":  "frontend",
+                                        "path":  "C:\\AI\\repos\\frontend",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "gateway",
+                                        "path":  "C:\\AI\\repos\\gateway",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "human_intelligence",
+                                        "path":  "C:\\AI\\repos\\human_intelligence",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "index",
+                                        "path":  "C:\\AI\\repos\\index",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "industries",
+                                        "path":  "C:\\AI\\repos\\industries",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "infinity-gateway",
+                                        "path":  "C:\\AI\\repos\\infinity-gateway",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "infinity_x_one_systems",
+                                        "path":  "C:\\AI\\repos\\infinity_x_one_systems",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "interfaces",
+                                        "path":  "C:\\AI\\repos\\interfaces",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "language",
+                                        "path":  "C:\\AI\\repos\\language",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "logs",
+                                        "path":  "C:\\AI\\repos\\logs",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "memory",
+                                        "path":  "C:\\AI\\repos\\memory",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "metrics",
+                                        "path":  "C:\\AI\\repos\\metrics",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "ml_platform",
+                                        "path":  "C:\\AI\\repos\\ml_platform",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "mvp-real-estate-intelligence",
+                                        "path":  "C:\\AI\\repos\\mvp-real-estate-intelligence",
+                                        "branch":  "mvp/partner-demo"
+                                    },
+                                    {
+                                        "name":  "orchestrator",
+                                        "path":  "C:\\AI\\repos\\orchestrator",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "planner",
+                                        "path":  "C:\\AI\\repos\\planner",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "production",
+                                        "path":  "C:\\AI\\repos\\production",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "projects",
+                                        "path":  "C:\\AI\\repos\\projects",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "prompt_library",
+                                        "path":  "C:\\AI\\repos\\prompt_library",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "real-estate-intelligence",
+                                        "path":  "C:\\AI\\repos\\real-estate-intelligence",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "real-intel-system",
+                                        "path":  "C:\\AI\\repos\\real-intel-system",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "real-intelligence-system",
+                                        "path":  "C:\\AI\\repos\\real-intelligence-system",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "real_estate_intelligence_v1",
+                                        "path":  "C:\\AI\\repos\\real_estate_intelligence_v1",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "records",
+                                        "path":  "C:\\AI\\repos\\records",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "research",
+                                        "path":  "C:\\AI\\repos\\research",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "sandbox",
+                                        "path":  "C:\\AI\\repos\\sandbox",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "schedule",
+                                        "path":  "C:\\AI\\repos\\schedule",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "security",
+                                        "path":  "C:\\AI\\repos\\security",
+                                        "branch":  ""
+                                    },
+                                    {
+                                        "name":  "simulator",
+                                        "path":  "C:\\AI\\repos\\simulator",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "strategy",
+                                        "path":  "C:\\AI\\repos\\strategy",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "test",
+                                        "path":  "C:\\AI\\repos\\test",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "validator",
+                                        "path":  "C:\\AI\\repos\\validator",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "vision_cortex",
+                                        "path":  "C:\\AI\\repos\\vision_cortex",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "workspace",
+                                        "path":  "C:\\AI\\repos\\workspace",
+                                        "branch":  "main"
+                                    },
+                                    {
+                                        "name":  "_foundation_tmp",
+                                        "path":  "C:\\AI\\repos\\_foundation_tmp",
+                                        "branch":  "master"
+                                    }
+                                ]
+                  },
+    "checks":  {
+                   "cloud_run":  {
+                                     "orchestrator":  [
+                                                          {
+                                                              "url":  "https://orchestrator-896380409704.us-east1.run.app/health",
+                                                              "ok":  true,
+                                                              "data":  {
+                                                                           "status":  "ok",
+                                                                           "role":  "LEADER"
+                                                                       }
+                                                          },
+                                                          {
+                                                              "url":  "https://orchestrator-896380409704.us-east1.run.app/ready",
+                                                              "ok":  false,
+                                                              "data":  "The remote server returned an error: (404) Not Found."
+                                                          },
+                                                          {
+                                                              "url":  "https://orchestrator-896380409704.us-east1.run.app/",
+                                                              "ok":  true,
+                                                              "data":  {
+                                                                           "service":  "orchestrator",
+                                                                           "role":  "LEADER"
+                                                                       }
+                                                          }
+                                                      ],
+                                     "crawler":  [
+                                                     {
+                                                         "url":  "https://crawler-896380409704.us-east1.run.app/health",
+                                                         "ok":  true,
+                                                         "data":  "\u003c!doctype html\u003e\n\u003chtml lang=en\u003e\n\u003chead\u003e\n\u003cmeta charset=utf-8\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\n\u003ctitle\u003ePlaceholder | Cloud Run\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"preload\" as=\"font\"\u003e\n\u003clink\n  href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsSAAALEgHS3X78AAAB5klEQVRYha2XMVLDMBBFPxl6qCjciBskNzA3AE5AqrTQuaVVR1pX4QSYGyQ3SGqGATcu3JBUlGGUiTPyeiWvZH6TsSTLb/+XN8nZfr+H0lUBYAvgucySbzBSupoCmJRZ8sTNx2p0vG8J4AHAl9LVQunqmtnPQD4qXa0d81GyARo1IC/2hmWWGIfeAYwBGIi7fwMos2QNYEfmTLWXZKw4fl4AeKOQQxwAcaERrbIg14MjCQKwYrA1KJI+gBtmjLqAIZEcXsNGSlfb42a27sssKaw15lz8ePbcGOdcrzPViFz3uuCIwVZQJBIAbiMuBlviSCQASulqEgjQqPctaQE4+gEiYrDljYQ6AIcLU2ZM6gJ8kUgBxp6uGKJOJFIACJuSRK1IOgCecxDzNrh0iuScW/D7+eG4LxGuk6sDcDVbTZhuCEe1sV/JxuFpnacF5wDX/zsAV7OVOZS3EQ8/tOo6Tw+tWgqwqfN0S8Ziqp/Xedr6SScFWDBjIQAny+lEC8CT/5KsC7G/ZbkXwFF9WefpmoxJq+9YHgMQc/qdlscAhNrvtdwJ4Mh/x1Thq77XcieApHoPgNjyUABJ8wmyfBAAU32w5SyAI/+5p/tFW84CkOpfzb9kaqll/yDLfQDsgy2Z6gdb3hKAP2n+6m+fxBVHAAAAAElFTkSuQmCC\"\n  rel=\"icon\" \n  type=\"image/png\" \n/\u003e\n\u003cstyle\u003e\n body {\n\tfont-family: \u0027Roboto\u0027, sans-serif;\n\tfont-display: fallback;\n\tbackground: url(\u0027/assets/cloudy-bg.svg\u0027);\n\tbackground-size: cover;\n\tbackground-position: center;\n\tline-height: 1.6;\n }\n\nh1 {\n\tfont-size: 24px;\n\tfont-weight: bold;\n\tmargin-bottom: 0px;\n}\n\nh2 {\n\tfont-size: 18px;\n\tfont-weight: normal;\n\tmargin-top: 4px;\n}\n\nh3 {\n\tfont-size: 20px;\n\tmargin-bottom: 0px;\n}\n\n.next {\n    font-size: 15px;\n\tmargin-top: 8px;\n\tmargin-bottom: 8px;\n}\n\n.container {\n\tmax-width: 700px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n} \n\n.hero {\n\tmargin-top: 172px;\n}\n\n.hero .logo {\n\twidth: 140px;\n\tfloat: left;\n\tmargin-right: 32px;\n}\n\n.hero .message {\n\tfont-size: 15px;\n\ttext-align: center;\n\tmargin-bottom: 24px;\n}\n\n.details {\n\tclear: both;\n\theight: 400px;\n\tline-height: 1.8;\n}\n\ncode {\n\tfont-family: \u0027Roboto Mono\u0027, Courier, monospace;\n\tcolor: #A30038;\n\tbackground-color: #F8F8F8;\n\tborder: 1px solid #DDD;\n\tborder-radius: 2px;\n\tpadding: 0 6px;\n\tfont-weight: 500;\n}\n\n.cta a {\n\tcolor: white;\n\ttext-decoration: none;\n\tbackground-color: rgb(14, 101, 241);\n\tpadding: 8px 12px;\n\tmargin-top: 8px;\n\tmin-height: 36px;\n\tborder-radius: 2px;\n\tfont-weight: 600;\n}\n\n.cta a:hover {\n    background-color: rgb(66, 133, 244, 0.9);\n}\n\n@media (max-width: 600px) {\n    .hero .logo {\n        float: initial;\n        display: block;\n        margin-left: auto;\n        margin-right: auto;\n    }\n\n\t.container {\n        margin-top: 0;\n\t}\n\n    .hero {\n        margin-top: 0;\n        margin-bottom: 24px;\n\t}\n}\n\n\u003c/style\u003e\n\u003c/head\u003e\n\n\u003cbody\u003e\n\t\u003cdiv class=\"container\"\u003e\n\t\t\u003cdiv class=\"hero\"\u003e\n\t\t\t\u003cdiv style=\"text-align:center;\"\u003e\n\t\t\t\t\u003cpicture\u003e\n\t\t\t\t\t\u003cimg src=\"/assets/sad-unicorn.svg\" alt=\"A sad unicorn\" width=\"186\" height=\"284\"\u003e\n\t\t\t\t\u003c/picture\u003e\n\t\t\t\u003c/div\u003e\n\n\t\t\t\u003cdiv class=\"message\"\u003e\n\t\t\t\t\u003ch1\u003eSorry, this is just a placeholder…\u003c/h1\u003e\n\t\t\t\t\u003ch2\u003eContinuous deployment has been set up, but your code is not yet deployed.\u003c/h2\u003e\n\t\t\t\u003c/div\u003e\n\t\t\u003c/div\u003e\n\n\t\t\u003cdiv class=\"details\"\u003e\n\t\t\t\u003cp\u003e\n                This revision is a placeholder until your code successfully builds and deploys to the Cloud Run service \u003ccode\u003ecrawler\u003c/code\u003e in \u003ccode\u003eus-east1\u003c/code\u003e of the GCP project \u003ccode\u003einfinity-x-one-systems\u003c/code\u003e.\n            \u003c/p\u003e\n\n\t\t\t\u003ch3\u003eWhat\u0027s next?\u003c/h3\u003e\n            \u003col\u003e\n                \u003cli\u003eOpen the \u003ca href=\"https://console.cloud.google.com/run/detail/us-east1/crawler/revisions?project=infinity-x-one-systems\" target=\"_blank\" rel=\"noopener\"\u003eCloud Run service page\u003c/a\u003e.\u003c/li\u003e\n\t\t\t\t\t\t\t\t\u003cli\u003eCheck the status of your deployment.\u003c/li\u003e\n\t\t\t\t\t\t\t\t\u003cli\u003eIf the build has failed, click \"Build History\".\u003c/li\u003e\n                \u003cli\u003eExamine your build logs to understand why it failed.\u003c/li\u003e\n                \u003cli\u003eFix the issue in your code or Dockerfile (if any).\u003c/li\u003e\n                \u003cli\u003eCommit and push the change to your repository.\u003c/li\u003e\n            \u003c/ol\u003e\n\t\t\t\u003cp class=\"cta\"\u003e\n\t\t\t\t\u003ca href=\"https://console.cloud.google.com/run/detail/us-east1/crawler/revisions?project=infinity-x-one-systems\" target=\"_blank\" rel=\"noopener\"\u003e\n\t\t\t\t\tBACK TO CLOUD RUN\n                \u003c/a\u003e\n            \u003c/p\u003e\n\t\t\u003c/div\u003e\n\t\u003c/div\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+                                                     },
+                                                     {
+                                                         "url":  "https://crawler-896380409704.us-east1.run.app/ready",
+                                                         "ok":  true,
+                                                         "data":  "\u003c!doctype html\u003e\n\u003chtml lang=en\u003e\n\u003chead\u003e\n\u003cmeta charset=utf-8\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\n\u003ctitle\u003ePlaceholder | Cloud Run\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"preload\" as=\"font\"\u003e\n\u003clink\n  href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsSAAALEgHS3X78AAAB5klEQVRYha2XMVLDMBBFPxl6qCjciBskNzA3AE5AqrTQuaVVR1pX4QSYGyQ3SGqGATcu3JBUlGGUiTPyeiWvZH6TsSTLb/+XN8nZfr+H0lUBYAvgucySbzBSupoCmJRZ8sTNx2p0vG8J4AHAl9LVQunqmtnPQD4qXa0d81GyARo1IC/2hmWWGIfeAYwBGIi7fwMos2QNYEfmTLWXZKw4fl4AeKOQQxwAcaERrbIg14MjCQKwYrA1KJI+gBtmjLqAIZEcXsNGSlfb42a27sssKaw15lz8ePbcGOdcrzPViFz3uuCIwVZQJBIAbiMuBlviSCQASulqEgjQqPctaQE4+gEiYrDljYQ6AIcLU2ZM6gJ8kUgBxp6uGKJOJFIACJuSRK1IOgCecxDzNrh0iuScW/D7+eG4LxGuk6sDcDVbTZhuCEe1sV/JxuFpnacF5wDX/zsAV7OVOZS3EQ8/tOo6Tw+tWgqwqfN0S8Ziqp/Xedr6SScFWDBjIQAny+lEC8CT/5KsC7G/ZbkXwFF9WefpmoxJq+9YHgMQc/qdlscAhNrvtdwJ4Mh/x1Thq77XcieApHoPgNjyUABJ8wmyfBAAU32w5SyAI/+5p/tFW84CkOpfzb9kaqll/yDLfQDsgy2Z6gdb3hKAP2n+6m+fxBVHAAAAAElFTkSuQmCC\"\n  rel=\"icon\" \n  type=\"image/png\" \n/\u003e\n\u003cstyle\u003e\n body {\n\tfont-family: \u0027Roboto\u0027, sans-serif;\n\tfont-display: fallback;\n\tbackground: url(\u0027/assets/cloudy-bg.svg\u0027);\n\tbackground-size: cover;\n\tbackground-position: center;\n\tline-height: 1.6;\n }\n\nh1 {\n\tfont-size: 24px;\n\tfont-weight: bold;\n\tmargin-bottom: 0px;\n}\n\nh2 {\n\tfont-size: 18px;\n\tfont-weight: normal;\n\tmargin-top: 4px;\n}\n\nh3 {\n\tfont-size: 20px;\n\tmargin-bottom: 0px;\n}\n\n.next {\n    font-size: 15px;\n\tmargin-top: 8px;\n\tmargin-bottom: 8px;\n}\n\n.container {\n\tmax-width: 700px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n} \n\n.hero {\n\tmargin-top: 172px;\n}\n\n.hero .logo {\n\twidth: 140px;\n\tfloat: left;\n\tmargin-right: 32px;\n}\n\n.hero .message {\n\tfont-size: 15px;\n\ttext-align: center;\n\tmargin-bottom: 24px;\n}\n\n.details {\n\tclear: both;\n\theight: 400px;\n\tline-height: 1.8;\n}\n\ncode {\n\tfont-family: \u0027Roboto Mono\u0027, Courier, monospace;\n\tcolor: #A30038;\n\tbackground-color: #F8F8F8;\n\tborder: 1px solid #DDD;\n\tborder-radius: 2px;\n\tpadding: 0 6px;\n\tfont-weight: 500;\n}\n\n.cta a {\n\tcolor: white;\n\ttext-decoration: none;\n\tbackground-color: rgb(14, 101, 241);\n\tpadding: 8px 12px;\n\tmargin-top: 8px;\n\tmin-height: 36px;\n\tborder-radius: 2px;\n\tfont-weight: 600;\n}\n\n.cta a:hover {\n    background-color: rgb(66, 133, 244, 0.9);\n}\n\n@media (max-width: 600px) {\n    .hero .logo {\n        float: initial;\n        display: block;\n        margin-left: auto;\n        margin-right: auto;\n    }\n\n\t.container {\n        margin-top: 0;\n\t}\n\n    .hero {\n        margin-top: 0;\n        margin-bottom: 24px;\n\t}\n}\n\n\u003c/style\u003e\n\u003c/head\u003e\n\n\u003cbody\u003e\n\t\u003cdiv class=\"container\"\u003e\n\t\t\u003cdiv class=\"hero\"\u003e\n\t\t\t\u003cdiv style=\"text-align:center;\"\u003e\n\t\t\t\t\u003cpicture\u003e\n\t\t\t\t\t\u003cimg src=\"/assets/sad-unicorn.svg\" alt=\"A sad unicorn\" width=\"186\" height=\"284\"\u003e\n\t\t\t\t\u003c/picture\u003e\n\t\t\t\u003c/div\u003e\n\n\t\t\t\u003cdiv class=\"message\"\u003e\n\t\t\t\t\u003ch1\u003eSorry, this is just a placeholder…\u003c/h1\u003e\n\t\t\t\t\u003ch2\u003eContinuous deployment has been set up, but your code is not yet deployed.\u003c/h2\u003e\n\t\t\t\u003c/div\u003e\n\t\t\u003c/div\u003e\n\n\t\t\u003cdiv class=\"details\"\u003e\n\t\t\t\u003cp\u003e\n                This revision is a placeholder until your code successfully builds and deploys to the Cloud Run service \u003ccode\u003ecrawler\u003c/code\u003e in \u003ccode\u003eus-east1\u003c/code\u003e of the GCP project \u003ccode\u003einfinity-x-one-systems\u003c/code\u003e.\n            \u003c/p\u003e\n\n\t\t\t\u003ch3\u003eWhat\u0027s next?\u003c/h3\u003e\n            \u003col\u003e\n                \u003cli\u003eOpen the \u003ca href=\"https://console.cloud.google.com/run/detail/us-east1/crawler/revisions?project=infinity-x-one-systems\" target=\"_blank\" rel=\"noopener\"\u003eCloud Run service page\u003c/a\u003e.\u003c/li\u003e\n\t\t\t\t\t\t\t\t\u003cli\u003eCheck the status of your deployment.\u003c/li\u003e\n\t\t\t\t\t\t\t\t\u003cli\u003eIf the build has failed, click \"Build History\".\u003c/li\u003e\n                \u003cli\u003eExamine your build logs to understand why it failed.\u003c/li\u003e\n                \u003cli\u003eFix the issue in your code or Dockerfile (if any).\u003c/li\u003e\n                \u003cli\u003eCommit and push the change to your repository.\u003c/li\u003e\n            \u003c/ol\u003e\n\t\t\t\u003cp class=\"cta\"\u003e\n\t\t\t\t\u003ca href=\"https://console.cloud.google.com/run/detail/us-east1/crawler/revisions?project=infinity-x-one-systems\" target=\"_blank\" rel=\"noopener\"\u003e\n\t\t\t\t\tBACK TO CLOUD RUN\n                \u003c/a\u003e\n            \u003c/p\u003e\n\t\t\u003c/div\u003e\n\t\u003c/div\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+                                                     },
+                                                     {
+                                                         "url":  "https://crawler-896380409704.us-east1.run.app/",
+                                                         "ok":  true,
+                                                         "data":  "\u003c!doctype html\u003e\n\u003chtml lang=en\u003e\n\u003chead\u003e\n\u003cmeta charset=utf-8\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u003e\n\u003ctitle\u003ePlaceholder | Cloud Run\u003c/title\u003e\n\u003clink href=\"https://fonts.googleapis.com/css?family=Roboto\" rel=\"preload\" as=\"font\"\u003e\n\u003clink\n  href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsSAAALEgHS3X78AAAB5klEQVRYha2XMVLDMBBFPxl6qCjciBskNzA3AE5AqrTQuaVVR1pX4QSYGyQ3SGqGATcu3JBUlGGUiTPyeiWvZH6TsSTLb/+XN8nZfr+H0lUBYAvgucySbzBSupoCmJRZ8sTNx2p0vG8J4AHAl9LVQunqmtnPQD4qXa0d81GyARo1IC/2hmWWGIfeAYwBGIi7fwMos2QNYEfmTLWXZKw4fl4AeKOQQxwAcaERrbIg14MjCQKwYrA1KJI+gBtmjLqAIZEcXsNGSlfb42a27sssKaw15lz8ePbcGOdcrzPViFz3uuCIwVZQJBIAbiMuBlviSCQASulqEgjQqPctaQE4+gEiYrDljYQ6AIcLU2ZM6gJ8kUgBxp6uGKJOJFIACJuSRK1IOgCecxDzNrh0iuScW/D7+eG4LxGuk6sDcDVbTZhuCEe1sV/JxuFpnacF5wDX/zsAV7OVOZS3EQ8/tOo6Tw+tWgqwqfN0S8Ziqp/Xedr6SScFWDBjIQAny+lEC8CT/5KsC7G/ZbkXwFF9WefpmoxJq+9YHgMQc/qdlscAhNrvtdwJ4Mh/x1Thq77XcieApHoPgNjyUABJ8wmyfBAAU32w5SyAI/+5p/tFW84CkOpfzb9kaqll/yDLfQDsgy2Z6gdb3hKAP2n+6m+fxBVHAAAAAElFTkSuQmCC\"\n  rel=\"icon\" \n  type=\"image/png\" \n/\u003e\n\u003cstyle\u003e\n body {\n\tfont-family: \u0027Roboto\u0027, sans-serif;\n\tfont-display: fallback;\n\tbackground: url(\u0027/assets/cloudy-bg.svg\u0027);\n\tbackground-size: cover;\n\tbackground-position: center;\n\tline-height: 1.6;\n }\n\nh1 {\n\tfont-size: 24px;\n\tfont-weight: bold;\n\tmargin-bottom: 0px;\n}\n\nh2 {\n\tfont-size: 18px;\n\tfont-weight: normal;\n\tmargin-top: 4px;\n}\n\nh3 {\n\tfont-size: 20px;\n\tmargin-bottom: 0px;\n}\n\n.next {\n    font-size: 15px;\n\tmargin-top: 8px;\n\tmargin-bottom: 8px;\n}\n\n.container {\n\tmax-width: 700px;\n\tmargin-left: auto;\n\tmargin-right: auto;\n} \n\n.hero {\n\tmargin-top: 172px;\n}\n\n.hero .logo {\n\twidth: 140px;\n\tfloat: left;\n\tmargin-right: 32px;\n}\n\n.hero .message {\n\tfont-size: 15px;\n\ttext-align: center;\n\tmargin-bottom: 24px;\n}\n\n.details {\n\tclear: both;\n\theight: 400px;\n\tline-height: 1.8;\n}\n\ncode {\n\tfont-family: \u0027Roboto Mono\u0027, Courier, monospace;\n\tcolor: #A30038;\n\tbackground-color: #F8F8F8;\n\tborder: 1px solid #DDD;\n\tborder-radius: 2px;\n\tpadding: 0 6px;\n\tfont-weight: 500;\n}\n\n.cta a {\n\tcolor: white;\n\ttext-decoration: none;\n\tbackground-color: rgb(14, 101, 241);\n\tpadding: 8px 12px;\n\tmargin-top: 8px;\n\tmin-height: 36px;\n\tborder-radius: 2px;\n\tfont-weight: 600;\n}\n\n.cta a:hover {\n    background-color: rgb(66, 133, 244, 0.9);\n}\n\n@media (max-width: 600px) {\n    .hero .logo {\n        float: initial;\n        display: block;\n        margin-left: auto;\n        margin-right: auto;\n    }\n\n\t.container {\n        margin-top: 0;\n\t}\n\n    .hero {\n        margin-top: 0;\n        margin-bottom: 24px;\n\t}\n}\n\n\u003c/style\u003e\n\u003c/head\u003e\n\n\u003cbody\u003e\n\t\u003cdiv class=\"container\"\u003e\n\t\t\u003cdiv class=\"hero\"\u003e\n\t\t\t\u003cdiv style=\"text-align:center;\"\u003e\n\t\t\t\t\u003cpicture\u003e\n\t\t\t\t\t\u003cimg src=\"/assets/sad-unicorn.svg\" alt=\"A sad unicorn\" width=\"186\" height=\"284\"\u003e\n\t\t\t\t\u003c/picture\u003e\n\t\t\t\u003c/div\u003e\n\n\t\t\t\u003cdiv class=\"message\"\u003e\n\t\t\t\t\u003ch1\u003eSorry, this is just a placeholder…\u003c/h1\u003e\n\t\t\t\t\u003ch2\u003eContinuous deployment has been set up, but your code is not yet deployed.\u003c/h2\u003e\n\t\t\t\u003c/div\u003e\n\t\t\u003c/div\u003e\n\n\t\t\u003cdiv class=\"details\"\u003e\n\t\t\t\u003cp\u003e\n                This revision is a placeholder until your code successfully builds and deploys to the Cloud Run service \u003ccode\u003ecrawler\u003c/code\u003e in \u003ccode\u003eus-east1\u003c/code\u003e of the GCP project \u003ccode\u003einfinity-x-one-systems\u003c/code\u003e.\n            \u003c/p\u003e\n\n\t\t\t\u003ch3\u003eWhat\u0027s next?\u003c/h3\u003e\n            \u003col\u003e\n                \u003cli\u003eOpen the \u003ca href=\"https://console.cloud.google.com/run/detail/us-east1/crawler/revisions?project=infinity-x-one-systems\" target=\"_blank\" rel=\"noopener\"\u003eCloud Run service page\u003c/a\u003e.\u003c/li\u003e\n\t\t\t\t\t\t\t\t\u003cli\u003eCheck the status of your deployment.\u003c/li\u003e\n\t\t\t\t\t\t\t\t\u003cli\u003eIf the build has failed, click \"Build History\".\u003c/li\u003e\n                \u003cli\u003eExamine your build logs to understand why it failed.\u003c/li\u003e\n                \u003cli\u003eFix the issue in your code or Dockerfile (if any).\u003c/li\u003e\n                \u003cli\u003eCommit and push the change to your repository.\u003c/li\u003e\n            \u003c/ol\u003e\n\t\t\t\u003cp class=\"cta\"\u003e\n\t\t\t\t\u003ca href=\"https://console.cloud.google.com/run/detail/us-east1/crawler/revisions?project=infinity-x-one-systems\" target=\"_blank\" rel=\"noopener\"\u003e\n\t\t\t\t\tBACK TO CLOUD RUN\n                \u003c/a\u003e\n            \u003c/p\u003e\n\t\t\u003c/div\u003e\n\t\u003c/div\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n"
+                                                     }
+                                                 ]
+                                 }
+               },
+    "repos":  {
+                  "inventory":  [
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/orchestrator.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/orchestrator",
+                                        "name":  "orchestrator",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/bootstrap.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/bootstrap",
+                                        "name":  "bootstrap",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/doc_evolution_system.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/doc_evolution_system",
+                                        "name":  "doc_evolution_system",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/language.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/language",
+                                        "name":  "language",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/analytics.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/analytics",
+                                        "name":  "analytics",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/Chat-intelligence.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/Chat-intelligence",
+                                        "name":  "Chat-intelligence",
+                                        "defaultBranch":  ""
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/memory-gateway.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/memory-gateway",
+                                        "name":  "memory-gateway",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/crawler_scraper.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/crawler_scraper",
+                                        "name":  "crawler_scraper",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/real-estate-intelligence.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/real-estate-intelligence",
+                                        "name":  "real-estate-intelligence",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/gateway.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/gateway",
+                                        "name":  "gateway",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/automation.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/automation",
+                                        "name":  "automation",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/real_estate_intelligence_v1.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/real_estate_intelligence_v1",
+                                        "name":  "real_estate_intelligence_v1",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/foundation.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/foundation",
+                                        "name":  "foundation",
+                                        "defaultBranch":  "master"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/mvp-real-estate-intelligence.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/mvp-real-estate-intelligence",
+                                        "name":  "mvp-real-estate-intelligence",
+                                        "defaultBranch":  "mvp/partner-demo"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/infinity-gateway.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/infinity-gateway",
+                                        "name":  "infinity-gateway",
+                                        "defaultBranch":  ""
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/autonomous_builder.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/autonomous_builder",
+                                        "name":  "autonomous_builder",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/infinity_x_one_systems.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/infinity_x_one_systems",
+                                        "name":  "infinity_x_one_systems",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/projects.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/projects",
+                                        "name":  "projects",
+                                        "defaultBranch":  ""
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/docker_llm.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/docker_llm",
+                                        "name":  "docker_llm",
+                                        "defaultBranch":  ""
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/vision_cortex.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/vision_cortex",
+                                        "name":  "vision_cortex",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/records.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/records",
+                                        "name":  "records",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/agent_communication.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/agent_communication",
+                                        "name":  "agent_communication",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/human_intelligence.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/human_intelligence",
+                                        "name":  "human_intelligence",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/agent_intelligence.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/agent_intelligence",
+                                        "name":  "agent_intelligence",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/logs.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/logs",
+                                        "name":  "logs",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/schedule.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/schedule",
+                                        "name":  "schedule",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/memory.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/memory",
+                                        "name":  "memory",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/docs.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/docs",
+                                        "name":  "docs",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/index.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/index",
+                                        "name":  "index",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/agents.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/agents",
+                                        "name":  "agents",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/devtools.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/devtools",
+                                        "name":  "devtools",
+                                        "defaultBranch":  ""
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/auto_templates.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/auto_templates",
+                                        "name":  "auto_templates",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/validator.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/validator",
+                                        "name":  "validator",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/auto_builder.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/auto_builder",
+                                        "name":  "auto_builder",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/test.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/test",
+                                        "name":  "test",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/codegen.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/codegen",
+                                        "name":  "codegen",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/ml_platform.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/ml_platform",
+                                        "name":  "ml_platform",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/metrics.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/metrics",
+                                        "name":  "metrics",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/research.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/research",
+                                        "name":  "research",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/interfaces.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/interfaces",
+                                        "name":  "interfaces",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/simulator.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/simulator",
+                                        "name":  "simulator",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/strategy.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/strategy",
+                                        "name":  "strategy",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/sandbox.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/sandbox",
+                                        "name":  "sandbox",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/evaluation.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/evaluation",
+                                        "name":  "evaluation",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/planner.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/planner",
+                                        "name":  "planner",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/security.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/security",
+                                        "name":  "security",
+                                        "defaultBranch":  ""
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/prompt_library.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/prompt_library",
+                                        "name":  "prompt_library",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/workspace.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/workspace",
+                                        "name":  "workspace",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/industries.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/industries",
+                                        "name":  "industries",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/frontend.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/frontend",
+                                        "name":  "frontend",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/enterprise.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/enterprise",
+                                        "name":  "enterprise",
+                                        "defaultBranch":  "main"
+                                    },
+                                    {
+                                        "sshUrl":  "git@github.com:InfinityXOneSystems/production.git",
+                                        "url":  "https://github.com/InfinityXOneSystems/production",
+                                        "name":  "production",
+                                        "defaultBranch":  "main"
+                                    }
+                                ]
+              },
+    "runtime":  {
+                    "last_rehydrate_local":  "2025-12-29T05:17:43.0630842-05:00",
+                    "last_rehydrate_utc":  "2025-12-29T10:17:43.0723790Z",
+                    "user":  "JARVIS-COMMAND$",
+                    "machine":  "JARVIS-COMMAND"
+                }
+}

@@ -1,0 +1,11 @@
+[2025-12-18 18:28:15.296] ?? REHYDRATE START
+[2025-12-18 18:28:15.643] ? schema.json created (v1.0.0)
+[2025-12-18 18:28:16.039] ? current.json initialized
+[2025-12-18 18:28:16.368] ?? Inventory: scanning repos...
+[2025-12-18 18:28:30.506] ? Repos found: 56
+[2025-12-18 18:28:30.637] ?? Cloud Run: health checks...
+[2025-12-18 18:28:32.624] ?? Snapshot appended: C:\AI\.infinity\memory\snapshots\snapshot-20251218-182832.json
+[2025-12-18 18:28:32.817] ?? current.json updated
+[2025-12-18 18:28:33.518] ? Orchestrator checks OK: 2/3
+[2025-12-18 18:28:33.583] ? Crawler checks OK:      3/3
+[2025-12-18 18:28:33.686] ?? REHYDRATE COMPLETE
