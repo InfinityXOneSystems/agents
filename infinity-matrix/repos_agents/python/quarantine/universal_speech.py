@@ -1,0 +1,1 @@
+# DEPRECATED: Echo is deprecated. Use Atlas/Infinity-XOS for all speech logic.

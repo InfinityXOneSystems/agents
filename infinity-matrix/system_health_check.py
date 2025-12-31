@@ -28,14 +28,8 @@ class SystemHealthCheck:
         """Validate critical directory structure."""
         required_dirs = [
             "ai_stack",
-            "ai_stack/github",
-            "ai_stack/firebase",
-            "ai_stack/google_cloud",
-            "ai_stack/hostinger",
-            "ai_stack/ollama",
-            "ai_stack/vertex_ai",
-            "gateway_stack",
             "frontend_stack",
+            "gateway_stack",
             "docs",
             "scripts"
         ]

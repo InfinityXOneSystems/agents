@@ -1,0 +1,66 @@
+{
+  "account_info": {
+    "account": "active",
+    "websites": 5,
+    "disk_space": "100GB",
+    "bandwidth": "unlimited",
+    "status": "active"
+  },
+  "domains": [
+    {
+      "domain_name": "example.com",
+      "status": "active",
+      "expiration_date": "2026-01-01",
+      "registrar": "hostinger"
+    }
+  ],
+  "vps_instances": [
+    {
+      "account_id": "123456",
+      "vps_name": "Production-VPS",
+      "os": "Ubuntu 22.04",
+      "ram": "4GB",
+      "disk": "100GB",
+      "status": "running",
+      "ip_address": "192.168.1.1"
+    }
+  ],
+  "databases": [
+    {
+      "database_name": "prod_db",
+      "type": "MySQL",
+      "size": "1.2GB",
+      "status": "active"
+    }
+  ],
+  "email_accounts": [
+    {
+      "email": "admin@example.com",
+      "status": "active",
+      "storage_used": "500MB"
+    }
+  ],
+  "ssl_certificates": [
+    {
+      "domain": "example.com",
+      "issuer": "Let's Encrypt",
+      "status": "active",
+      "expiration_date": "2026-01-01"
+    }
+  ],
+  "backups": [
+    {
+      "backup_id": "bak_123",
+      "timestamp": "2025-12-31T14:13:02.510953",
+      "size": "2.5GB",
+      "status": "completed"
+    }
+  ],
+  "security_settings": {
+    "firewall": "enabled",
+    "ddos_protection": "active",
+    "malware_scanner": "enabled",
+    "backups": "daily",
+    "ssl": "active"
+  }
+}

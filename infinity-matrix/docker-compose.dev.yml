@@ -1,0 +1,34 @@
+version: '3.8'
+
+# Development overrides for docker-compose.yml
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  frontend:
+    build:
+      context: ./frontend_stack/frontend
+      target: builder
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend_stack/frontend/src:/app/src
+      - ./frontend_stack/frontend/public:/app/public
+    environment:
+      - VITE_API_URL=http://localhost:3001
+
+  orchestration:
+    build:
+      context: ./orchestration
+      target: builder
+    command: npm run dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./orchestration/server:/app/server
+      - ./orchestration/agents:/app/agents
+      - ./orchestration/types:/app/types
+      - ./orchestration/utils:/app/utils
+    environment:
+      - NODE_ENV=development
+      - DEBUG=*

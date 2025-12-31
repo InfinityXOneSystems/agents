@@ -1,16 +1,16 @@
 {
-  "timestamp": 1767176860.395515,
+  "timestamp": 1767213237.4982524,
   "tests": {
     "directory_structure": true,
-    "python_imports": true,
+    "python_imports": false,
     "dependencies": false,
     "code_quality": true,
-    "pytest_suite": true
+    "pytest_suite": false
   },
   "metrics": {
-    "total_python_files": 33,
-    "total_lines_of_code": 1402,
-    "avg_file_size": 42
+    "total_python_files": 41,
+    "total_lines_of_code": 2411,
+    "avg_file_size": 58
   },
   "optimizations": [
     "Implement caching for frequently accessed data",

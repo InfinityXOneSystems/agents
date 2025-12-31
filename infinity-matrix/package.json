@@ -1,14 +1,27 @@
 {
   "name": "infinity-matrix",
   "version": "1.0.0",
+  "description": "Unified AI agent orchestration system combining Python AI agents with TypeScript coordination",
   "private": true,
+  "workspaces": [
+    "orchestration",
+    "auto_builder",
+    "vscode-extension"
+  ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:orchestration": "cd orchestration && npm test",
+    "build:orchestration": "cd orchestration && npm run build",
+    "start:orchestration": "cd orchestration && npm start",
+    "health:check": "python system_health_check.py",
+    "agents:test": "pytest ai_stack/ -v",
+    "dev": "concurrently \"npm run start:orchestration\" \"cd ai_stack && python system_health_check.py\""
   },
   "jest": {
     "moduleDirectories": ["node_modules", "auto_builder/shared_components"]
   },
   "devDependencies": {
-    "jest": "^29.0.0"
+    "jest": "^29.0.0",
+    "concurrently": "^8.0.0"
   }
 }

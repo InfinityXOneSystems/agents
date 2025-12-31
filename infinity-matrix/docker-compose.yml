@@ -1,6 +1,52 @@
 version: '3.8'
 
 services:
+  # Frontend - React Dashboard
+  frontend:
+    build:
+      context: ./frontend_stack/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    depends_on:
+      - orchestration
+    networks:
+      - infinity-network
+
+  # Backend - Orchestration Server (TypeScript/Express)
+  orchestration:
+    build:
+      context: ./orchestration
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - HOSTINGER_API_KEY=${HOSTINGER_API_KEY:-}
+    volumes:
+      - ./credentials:/app/credentials:ro
+    networks:
+      - infinity-network
+
+  # Python AI Stack Services
+  ai-services:
+    build:
+      context: .
+      dockerfile: Dockerfile.ai
+    environment:
+      - HOSTINGER_API_KEY=${HOSTINGER_API_KEY:-}
+      - API_GATEWAY_URL=http://api-gateway:8000
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./credentials:/app/credentials:ro
+    networks:
+      - infinity-network
+
+  # Original Gateway Service
   api-gateway:
     build:
       context: .
@@ -12,6 +58,8 @@ services:
       - LOG_LEVEL=INFO
     depends_on:
       - setup-env
+    networks:
+      - infinity-network
 
   setup-env:
     build:
@@ -20,6 +68,8 @@ services:
     environment:
       - API_GATEWAY_URL=http://api-gateway:8000
       - LOG_LEVEL=INFO
+    networks:
+      - infinity-network
 
   ollama:
     image: ollama/ollama:latest
@@ -27,6 +77,8 @@ services:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
+    networks:
+      - infinity-network
 
   crawler:
     build:
@@ -38,6 +90,12 @@ services:
     depends_on:
       - ollama
       - api-gateway
+    networks:
+      - infinity-network
+
+networks:
+  infinity-network:
+    driver: bridge
 
 volumes:
   ollama_data:

@@ -1,0 +1,32 @@
+# AI Services - Python
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements.txt ./
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy AI stack
+COPY ai_stack ./ai_stack
+
+# Create credentials volume mount point
+RUN mkdir -p /app/credentials
+
+# Set Python path
+ENV PYTHONPATH=/app:$PYTHONPATH
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD python -c "from ai_stack.hostinger.hostinger_agent import HostingerAgent; h = HostingerAgent(); print('OK')" || exit 1
+
+# Run system health check
+CMD ["python", "ai_stack/system_health_check.py"]
