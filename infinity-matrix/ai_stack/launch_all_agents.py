@@ -50,6 +50,16 @@ def launch_tester():
         logging.error(f"Failed to launch tester: {e}")
         print(f"❌ Tester launch failed: {e}")
 
+def launch_hostinger_agent():
+    """Launch Hostinger autonomous agent."""
+    try:
+        subprocess.Popen(['python', r'C:\AI.worktrees\worktree-2025-12-31T05-31-01\infinity-matrix\ai_stack\hostinger_agent.py', '--interval', '3600'])
+        logging.info("Hostinger Agent launched")
+        print("✅ Hostinger Agent launched")
+    except Exception as e:
+        logging.error(f"Failed to launch Hostinger agent: {e}")
+        print(f"❌ Hostinger Agent launch failed: {e}")
+
 if __name__ == "__main__":
     print("Launching all agents...")
     launch_daemon()
@@ -59,4 +69,6 @@ if __name__ == "__main__":
     launch_repo_sync()
     time.sleep(2)
     launch_tester()
+    time.sleep(2)
+    launch_hostinger_agent()
     print("All agents launched autonomously!")
