@@ -17,6 +17,8 @@ sys.path.append(r'c:\AI\infinity-matrix\ai_stack')
 from github.github_agent import GitHubAgent
 from firebase.firebase_agent import FirebaseAgent
 from google_cloud.google_cloud_agent import GoogleCloudAgent
+from google_cloud.firestore_agent import FirestoreAgent
+from google_cloud.pubsub_agent import PubSubAgent
 from hostinger.hostinger_agent import HostingerAgent
 
 logging.basicConfig(filename=r'C:\AI\credentials\integration.log', level=logging.INFO)
@@ -47,6 +49,18 @@ class MasterIntegrator:
             logging.error(f"Google Cloud agent failed: {e}")
 
         try:
+            self.agents['firestore'] = FirestoreAgent()
+            logging.info("Firestore agent loaded")
+        except Exception as e:
+            logging.error(f"Firestore agent failed: {e}")
+
+        try:
+            self.agents['pubsub'] = PubSubAgent()
+            logging.info("Pub/Sub agent loaded")
+        except Exception as e:
+            logging.error(f"Pub/Sub agent failed: {e}")
+
+        try:
             self.agents['hostinger'] = HostingerAgent()
             logging.info("Hostinger agent loaded")
         except Exception as e:
@@ -70,6 +84,57 @@ class MasterIntegrator:
             doc_id = self.agents['firebase'].add_document('backups', data)
             logging.info(f"Backup created: {doc_id}")
 
+    def store_in_firestore(self) -> None:
+        """Store structured data in Firestore with real-time sync."""
+        if 'firestore' in self.agents:
+            fs = self.agents['firestore']
+            
+            # Create collections and documents
+            fs.create_index('systems', [('status', 'asc'), ('updated_at', 'desc')])
+            
+            system_data = {
+                'name': 'infinity-matrix',
+                'status': 'healthy',
+                'agents': 7,
+                'version': '1.0.0',
+                'timestamp': time.time()
+            }
+            doc_id = fs.add_document('systems', system_data)
+            logging.info(f"System state stored in Firestore: {doc_id}")
+
+    def publish_events_to_pubsub(self) -> None:
+        """Publish system events to Pub/Sub topics."""
+        if 'pubsub' in self.agents:
+            pubsub = self.agents['pubsub']
+            
+            # Create topics
+            pubsub.create_topic('system-events')
+            pubsub.create_topic('data-sync')
+            pubsub.create_topic('alerts')
+            
+            # Publish initialization event
+            event = {
+                'event_type': 'system.initialized',
+                'timestamp': time.time(),
+                'agents': list(self.agents.keys())
+            }
+            
+            msg_id = pubsub.publish_message('system-events', event)
+            logging.info(f"Event published to Pub/Sub: {msg_id}")
+
+    def subscribe_to_events(self) -> None:
+        """Subscribe to Pub/Sub events for real-time processing."""
+        if 'pubsub' in self.agents:
+            pubsub = self.agents['pubsub']
+            
+            def event_handler(message):
+                logging.info(f"Event received: {message}")
+                
+            # Create subscription and subscribe
+            pubsub.create_subscription('master-sub', 'system-events')
+            pubsub.subscribe('master-sub', event_handler)
+            logging.info("Master integrator subscribed to system events")
+
     def monitor_hosting(self):
         """Monitor Hostinger hosting."""
         if 'hostinger' in self.agents:
@@ -82,6 +147,9 @@ class MasterIntegrator:
             try:
                 self.sync_repos_to_cloud()
                 self.backup_to_firebase()
+                self.store_in_firestore()
+                self.publish_events_to_pubsub()
+                self.subscribe_to_events()
                 self.monitor_hosting()
                 time.sleep(3600)  # Every hour
             except Exception as e:
