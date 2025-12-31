@@ -124,7 +124,7 @@ class SimulationTest:
         }
         with patch('google_cloud.google_cloud_agent.GoogleCloudAgent.load_creds', return_value=mock_creds), \
              patch('google.oauth2.service_account.Credentials.from_service_account_info'), \
-        with patch('google.cloud.storage.Client') as mock_storage, patch('google.cloud.firestore.Client') as mock_firestore:
+             patch('google.cloud.storage.Client') as mock_storage, patch('google.cloud.firestore.Client'):
             mock_storage.return_value.bucket.return_value.blob.return_value.upload_from_filename.return_value = None
             mock_storage.return_value.bucket.return_value.blob.return_value.public_url = 'https://mock.url'
 
