@@ -89,7 +89,7 @@ class SystemHealthCheck:
             )
             
             if result.returncode == 0:
-                print(f"All tests passed")
+                print("All tests passed")
                 self.results["tests"]["pytest_suite"] = True
                 return True
             else:

@@ -10,7 +10,7 @@ class GitHubAgent:
 
     def create_repo(self, repo_name: str) -> dict:
         """Create a new repository."""
-        return {"name": "new_repo", "id": 123}
+        return {"name": repo_name, "id": 123, "url": f"https://github.com/mock/{repo_name}"}
 
     def authenticate_with_app(self):
         print("Authenticating with GitHub App...")

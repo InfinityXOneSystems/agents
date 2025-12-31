@@ -4,8 +4,6 @@ Full Live Simulation Test for Credential System
 Simulates all integrations with mock data and operations.
 """
 
-import time
-import json
 import logging
 from unittest.mock import patch, MagicMock
 from typing import Any, List

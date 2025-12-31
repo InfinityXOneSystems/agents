@@ -8,4 +8,6 @@ class GoogleCloudAgent:
 
     def upload_to_bucket(self, bucket_name: str, source_file: str, dest_file: str) -> str:
         """Upload a file to a GCS bucket."""
-        return 'https://mock.url'
+        url = f'https://storage.googleapis.com/{bucket_name}/{dest_file}'
+        print(f"Uploaded {source_file} to {bucket_name}/{dest_file}")
+        return url
