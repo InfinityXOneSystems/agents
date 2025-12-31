@@ -1,0 +1,4 @@
+# Google Vertex AI Requirements
+google-cloud-aiplatform>=1.38.0
+google-auth>=2.23.0
+protobuf>=4.25.0
