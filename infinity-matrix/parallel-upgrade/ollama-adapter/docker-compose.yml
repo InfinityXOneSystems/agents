@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  ollama-adapter:
+    build: .
+    container_name: ollama-adapter
+    environment:
+      - OLLAMA_PATH=/usr/local/bin/ollama
+    ports:
+      - "8080:8080"
+    volumes:
+      - /usr/local/bin/ollama:/usr/local/bin/ollama:ro

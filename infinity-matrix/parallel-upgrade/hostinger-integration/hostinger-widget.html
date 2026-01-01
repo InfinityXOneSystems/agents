@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Infinity Widget Demo</title>
+    <style>body{font-family:Arial;margin:20px}#out{white-space:pre-wrap;border:1px solid #ddd;padding:10px;height:120px;overflow:auto}</style>
+  </head>
+  <body>
+    <h3>Infinity Widget Demo</h3>
+    <!-- Hostinger should inject FRONTEND_ACCESS_TOKEN at runtime via Hostinger secrets -->
+    <!-- Do NOT hardcode the token into HTML for production. The demo token lives in credentials/frontend_access_token.txt in this repo. -->
+    <script src="hostinger-snippet.js"></script>
+
+    <input id="msg" placeholder="Type message" style="width:60%" />
+    <button id="send">Send</button>
+    <div id="out">Response will appear here</div>
+
+    <script>
+      document.getElementById('send').onclick = async function () {
+        const msg = document.getElementById('msg').value || 'ping';
+        try {
+          const res = await window.InfinityWidget.chat(msg);
+          document.getElementById('out').textContent = JSON.stringify(res, null, 2);
+        } catch (err) {
+          document.getElementById('out').textContent = 'Error: ' + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "infinity-sync-tests",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test:sync": "node sync_test.mjs"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

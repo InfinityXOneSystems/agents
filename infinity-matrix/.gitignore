@@ -66,6 +66,22 @@ htmlcov/
 credentials.json
 *.pem
 *.key
+# Plaintext credential files (development only)
+credentials/*.txt
+
+# Credential managers and secret stores (local helpers, do not commit)
+# Examples: credential-manager service directories, helper caches, secret files
+credential-manager/
+credential_manager/
+credential-store/
+credentials.*
+.netrc
+.aws/credentials
+.aws/credentials*
+secrets.yml
+secrets.yaml
+secrets/
+
 
 # BUT DO NOT IGNORE:
 # .infinity/ is CRITICAL system metadata - must be tracked
