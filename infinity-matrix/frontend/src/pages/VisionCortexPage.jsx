@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Send, Zap, Activity, Eye, Brain, Settings, Database, ArrowLeft, MoreVertical, Image as ImageIcon, X } from 'lucide-react';
+import { Send, Zap, Activity, Eye, Brain, Settings, Database, ArrowLeft, MoreVertical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { useToast } from '@/components/ui/use-toast';
@@ -12,13 +12,11 @@ const VisionCortexPage = () => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi there. I'm Vision Cortex, your AI thinking partner. I can analyze images, solve problems, or help you plan. What's on your mind today?"
+      content: "Hi there. I'm Vision Cortex, your AI thinking partner. I'm ready to help you solve problems, analyze data, or plan your next strategic move. What's on your mind today?"
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -39,62 +37,18 @@ const VisionCortexPage = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleImageSelect = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please select an image under 5MB.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const clearImage = () => {
-    setImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-
   const handleSend = async (e) => {
     e.preventDefault();
-    if (!input.trim() && !imagePreview) return;
+    if (!input.trim()) return;
 
-    // Capture current state values
-    const currentInput = input;
-    const currentImage = imagePreview;
-
-    const userMsg = { 
-      role: 'user', 
-      content: currentInput,
-      image: currentImage
-    };
-    
+    const userMsg = { role: 'user', content: input };
     setMessages(prev => [...prev, userMsg]);
-    
-    // Reset inputs immediately
     setInput('');
-    clearImage();
     setIsTyping(true);
 
     try {
-      let response;
-      
-      if (currentImage) {
-        // Extract base64 data (remove data:image/png;base64, prefix)
-        const base64Data = currentImage.split(',')[1];
-        response = await api.analyzeImage(base64Data, currentInput);
-      } else {
-        response = await api.sendMessage(currentInput);
-      }
+      // Connect to Gemini API via our lib/api wrapper
+      const response = await api.sendMessage(userMsg.content);
       
       setIsTyping(false);
       if (response) {
@@ -111,7 +65,7 @@ const VisionCortexPage = () => {
       setIsTyping(false);
       toast({
         title: "System Error",
-        description: "An unexpected error occurred during transmission.",
+        description: "An unexpected error occurred.",
         variant: "destructive"
       });
     }
@@ -206,17 +160,12 @@ const VisionCortexPage = () => {
                   )}
                   
                   <div className={`
-                    max-w-[85%] lg:max-w-[80%] rounded-2xl p-4 text-sm lg:text-base leading-relaxed whitespace-pre-wrap flex flex-col gap-2
+                    max-w-[85%] lg:max-w-[80%] rounded-2xl p-4 text-sm lg:text-base leading-relaxed whitespace-pre-wrap
                     ${msg.role === 'user' 
                       ? 'bg-[#0066FF] text-white rounded-tr-sm' 
                       : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-sm backdrop-blur-sm'
                     }
                   `}>
-                    {msg.image && (
-                      <div className="rounded-lg overflow-hidden border border-white/20 bg-black/20">
-                         <img src={msg.image} alt="User upload" className="max-w-full h-auto max-h-60 object-contain mx-auto" />
-                      </div>
-                    )}
                     {msg.content}
                   </div>
                 </motion.div>
@@ -240,69 +189,24 @@ const VisionCortexPage = () => {
 
           {/* Input Area */}
           <div className="p-4 lg:p-6 border-t border-white/10 bg-black/80 lg:bg-black/40 backdrop-blur-md sticky bottom-0 z-20">
-            <div className="max-w-3xl mx-auto">
-              {/* Image Preview Area */}
-              {imagePreview && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-3"
-                >
-                  <div className="relative inline-block">
-                    <div className="relative rounded-xl overflow-hidden border border-white/20 max-w-[120px] max-h-[120px] bg-black">
-                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover opacity-80" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <button 
-                        onClick={clearImage}
-                        className="absolute top-1 right-1 p-1 bg-black/60 rounded-full text-white/80 hover:text-white hover:bg-red-500/80 transition-colors backdrop-blur-sm"
-                        type="button"
-                      >
-                        <X size={12} />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              <form onSubmit={handleSend} className="relative flex gap-3">
-                <button
-                   type="button"
-                   onClick={() => fileInputRef.current?.click()}
-                   className={`p-3 lg:p-4 rounded-full transition-colors border ${
-                     imagePreview 
-                      ? 'bg-[#0066FF]/20 text-[#0066FF] border-[#0066FF]/40' 
-                      : 'bg-white/5 text-white/60 hover:text-[#0066FF] hover:bg-[#0066FF]/10 border-white/5'
-                   }`}
-                   title="Upload Image for Analysis"
-                >
-                   <ImageIcon size={18} className="lg:w-5 lg:h-5" />
-                </button>
-                <input 
-                   type="file"
-                   ref={fileInputRef}
-                   className="hidden"
-                   accept="image/*"
-                   onChange={handleImageSelect}
-                />
-
-                <input 
-                  type="text" 
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={imagePreview ? "Ask Cortex about this image..." : "Message Cortex..."}
-                  className="flex-1 bg-white/5 border border-white/10 rounded-full py-3 lg:py-4 pl-5 lg:pl-6 pr-4 text-white focus:outline-none focus:border-[#0066FF]/50 transition-colors placeholder:text-white/20 font-light text-sm lg:text-base"
-                />
-                <button 
-                  type="submit"
-                  disabled={(!input.trim() && !imagePreview) || isTyping}
-                  className="p-3 lg:p-4 rounded-full bg-[#0066FF] text-white hover:bg-[#0052cc] transition-colors shadow-[0_0_15px_rgba(0,102,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Send size={18} className="lg:w-5 lg:h-5" />
-                </button>
-              </form>
-              <div className="text-center mt-2 lg:mt-4">
-                <p className="text-[10px] text-white/20 uppercase tracking-widest">Powered by Infinity XOS</p>
-              </div>
+            <form onSubmit={handleSend} className="max-w-3xl mx-auto relative flex gap-2">
+              <input 
+                type="text" 
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Message Cortex..." 
+                className="flex-1 bg-white/5 border border-white/10 rounded-full py-3 lg:py-4 pl-5 lg:pl-6 pr-4 text-white focus:outline-none focus:border-[#0066FF]/50 transition-colors placeholder:text-white/20 font-light text-sm lg:text-base"
+              />
+              <button 
+                type="submit"
+                disabled={!input.trim() || isTyping}
+                className="p-3 lg:p-4 rounded-full bg-[#0066FF] text-white hover:bg-[#0052cc] transition-colors shadow-[0_0_15px_rgba(0,102,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send size={18} className="lg:w-5 lg:h-5" />
+              </button>
+            </form>
+            <div className="text-center mt-2 lg:mt-4">
+              <p className="text-[10px] text-white/20 uppercase tracking-widest">Powered by Infinity XOS</p>
             </div>
           </div>
         </main>

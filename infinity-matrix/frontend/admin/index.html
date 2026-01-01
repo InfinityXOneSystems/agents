@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"><head>
+		<meta charset="UTF-8">
+		<link rel="icon" type="image/svg+xml" href="/vite.svg">
+    <link rel="manifest" href="/manifest.json">
+		<meta name="generator" content="Hostinger Horizons">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Log In | Infinity X</title>
+		<script type="module" crossorigin="" src="/assets/index-b7b2761e.js"></script>
+		<link rel="stylesheet" href="/assets/index-5d76cf1e.css">
+		<script type="module">
+window.onerror = (message, source, lineno, colno, errorObj) => {
+	const errorDetails = errorObj ? JSON.stringify({
+		name: errorObj.name,
+		message: errorObj.message,
+		stack: errorObj.stack,
+		source,
+		lineno,
+		colno,
+	}) : null;
+
+	window.parent.postMessage({
+		type: 'horizons-runtime-error',
+		message,
+		error: errorDetails
+	}, '*');
+};
+</script>
+		<script type="module">
+const observer = new MutationObserver((mutations) => {
+	for (const mutation of mutations) {
+		for (const addedNode of mutation.addedNodes) {
+			if (
+				addedNode.nodeType === Node.ELEMENT_NODE &&
+				(
+					addedNode.tagName?.toLowerCase() === 'vite-error-overlay' ||
+					addedNode.classList?.contains('backdrop')
+				)
+			) {
+				handleViteOverlay(addedNode);
+			}
+		}
+	}
+});
+
+observer.observe(document.documentElement, {
+	childList: true,
+	subtree: true
+});
+
+function handleViteOverlay(node) {
+	if (!node.shadowRoot) {
+		return;
+	}
+
+	const backdrop = node.shadowRoot.querySelector('.backdrop');
+
+	if (backdrop) {
+		const overlayHtml = backdrop.outerHTML;
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(overlayHtml, 'text/html');
+		const messageBodyElement = doc.querySelector('.message-body');
+		const fileElement = doc.querySelector('.file');
+		const messageText = messageBodyElement ? messageBodyElement.textContent.trim() : '';
+		const fileText = fileElement ? fileElement.textContent.trim() : '';
+		const error = messageText + (fileText ? ' File:' + fileText : '');
+
+		window.parent.postMessage({
+			type: 'horizons-vite-error',
+			error,
+		}, '*');
+	}
+}
+</script>
+		<script type="module">
+const originalConsoleError = console.error;
+console.error = function(...args) {
+	originalConsoleError.apply(console, args);
+
+	let errorString = '';
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i];
+		if (arg instanceof Error) {
+			errorString = arg.stack || `${arg.name}: ${arg.message}`;
+			break;
+		}
+	}
+
+	if (!errorString) {
+		errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
+	}
+
+	window.parent.postMessage({
+		type: 'horizons-console-error',
+		error: errorString
+	}, '*');
+};
+</script>
+		<script type="module">
+const originalFetch = window.fetch;
+
+window.fetch = function(...args) {
+	const url = args[0] instanceof Request ? args[0].url : args[0];
+
+	// Skip WebSocket URLs
+	if (url.startsWith('ws:') || url.startsWith('wss:')) {
+		return originalFetch.apply(this, args);
+	}
+
+	return originalFetch.apply(this, args)
+		.then(async response => {
+			const contentType = response.headers.get('Content-Type') || '';
+
+			// Exclude HTML document responses
+			const isDocumentResponse =
+				contentType.includes('text/html') ||
+				contentType.includes('application/xhtml+xml');
+
+			if (!response.ok && !isDocumentResponse) {
+					const responseClone = response.clone();
+					const errorFromRes = await responseClone.text();
+					const requestUrl = response.url;
+					console.error(`Fetch error from ${requestUrl}: ${errorFromRes}`);
+			}
+
+			return response;
+		})
+		.catch(error => {
+			if (!url.match(/.html?$/i)) {
+				console.error(error);
+			}
+
+			throw error;
+		});
+};
+</script>
+		<script type="module">
+if (window.navigation && window.self !== window.top) {
+	window.navigation.addEventListener('navigate', (event) => {
+		const url = event.destination.url;
+
+		try {
+			const destinationUrl = new URL(url);
+			const destinationOrigin = destinationUrl.origin;
+			const currentOrigin = window.location.origin;
+
+			if (destinationOrigin === currentOrigin) {
+				return;
+			}
+		} catch (error) {
+			return;
+		}
+
+		window.parent.postMessage({
+			type: 'horizons-navigation-error',
+			url,
+		}, '*');
+	});
+}
+</script>
+	</head>
+	<body>
+		<div id="root"><div class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-[#000000] text-white"><div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-black"><div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgb(0, 102, 255) 1px, transparent 1px), linear-gradient(to right, rgba(0, 102, 255, 0.05) 1px, transparent 1px), linear-gradient(rgba(0, 102, 255, 0.05) 1px, transparent 1px); background-size: 30px 30px; mask-image: radial-gradient(circle at 60% 40%, black, transparent 70%);"></div><div class="absolute top-[-20%] left-[-20%] w-[80%] h-[80%] bg-contain bg-no-repeat opacity-20 mix-blend-screen" style="background-image: url(&quot;https://horizons-cdn.hostinger.com/ff7a3d8f-2894-49d9-aa19-275af81f136a/b0e084ba2ea69ebb6b544bbb90a7aa0c.jpg&quot;); filter: hue-rotate(15deg) brightness(1.2) blur(2px); opacity: 0;"></div><div class="absolute top-0 right-[-10%] w-[70%] h-[120%] bg-cover bg-left opacity-30 mix-blend-screen pointer-events-none" style="background-image: url(&quot;https://horizons-cdn.hostinger.com/ff7a3d8f-2894-49d9-aa19-275af81f136a/86cb0fdc565e812f8280a286b06a763f.jpg&quot;); filter: drop-shadow(rgb(0, 102, 255) 0px 0px 20px) blur(1px); transform: translateX(95.4269px); opacity: 0;"></div><svg class="absolute inset-0 w-full h-full opacity-40 pointer-events-none"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="transparent"></stop><stop offset="50%" stop-color="#0066FF"></stop><stop offset="100%" stop-color="transparent"></stop></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="coloredBlur"></feGaussianBlur><feMerge><feMergeNode in="coloredBlur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter></defs><path d="M 100 0 Q 60 40, 80 100" stroke="url(#grad1)" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.43511999999999995" pathLength="1" stroke-dashoffset="0px" stroke-dasharray="0.7252px 1px"></path><path d="M 90 0 Q 70 40, 60 100" stroke="url(#grad1)" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.053657142857142855" pathLength="1" stroke-dashoffset="0px" stroke-dasharray="0.08942857142857143px 1px"></path><path d="M 80 0 Q 80 40, 40 100" stroke="url(#grad1)" stroke-width="2" fill="none" filter="url(#glow)" opacity="0" pathLength="1" stroke-dashoffset="0px" stroke-dasharray="0px 1px"></path><path d="M 70 0 Q 90 40, 20 100" stroke="url(#grad1)" stroke-width="2" fill="none" filter="url(#glow)" opacity="0" pathLength="1" stroke-dashoffset="0px" stroke-dasharray="0px 1px"></path><rect x="0" y="20%" width="100%" height="2" fill="url(#grad1)" filter="url(#glow)" opacity="0.13597499999999998" transform-origin="640px 145px" style="transform: translateX(-54.675%); transform-origin: 640px 145px;"></rect></svg><div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0066FF]/5 to-black/80 pointer-events-none mix-blend-overlay"></div></div><div class="w-full max-w-md relative z-10"><div class="glass-panel p-10 rounded-3xl border border-[#0066FF]/20 shadow-[0_0_80px_rgba(0,102,255,0.15)] backdrop-blur-xl bg-black/80"><div class="text-center mb-10"><div class="w-16 h-16 mx-auto bg-[#0066FF]/10 rounded-full flex items-center justify-center mb-6 text-[#0066FF] ring-1 ring-[#0066FF]/30"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-fingerprint"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path><path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"></path><path d="M2 12a10 10 0 0 1 18-6"></path><path d="M2 16h.01"></path><path d="M21.8 16c.2-2 .131-5.354 0-6"></path><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"></path><path d="M8.65 22c.21-.66.45-1.32.57-2"></path><path d="M9 6.8a6 6 0 0 1 9 5.2v2"></path></svg></div><h1 class="text-3xl font-light mb-2 tracking-tight">Welcome Back</h1><p class="text-white/40 text-sm">Or welcome early to the future.</p></div><div class="space-y-4"><button class="inline-flex items-center justify-center ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full h-14 bg-white text-black hover:bg-gray-200 font-medium tracking-wide text-sm rounded-xl transition-all hover:scale-[1.02]"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chrome mr-3 w-5 h-5"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="21.17" x2="12" y1="8" y2="8"></line><line x1="3.95" x2="8.54" y1="6.06" y2="14"></line><line x1="10.88" x2="15.46" y1="21.94" y2="14"></line></svg>Sign in with Google</button><button class="inline-flex items-center justify-center ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 w-full h-14 bg-white/5 text-white hover:bg-white/10 border border-white/10 font-medium tracking-wide text-sm rounded-xl transition-all hover:scale-[1.02]"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github mr-3 w-5 h-5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>Sign in with GitHub</button></div><div class="mt-8 text-center border-t border-white/5 pt-6"><p class="text-[10px] text-white/20 uppercase tracking-widest">Secure &amp; Encrypted</p></div></div></div></div><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events: none;"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div></div>
+		
+	
+</body></html>

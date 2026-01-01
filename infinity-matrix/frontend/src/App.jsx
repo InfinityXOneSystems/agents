@@ -11,6 +11,8 @@ import IntelligencePage from '@/pages/IntelligencePage';
 import FuturePage from '@/pages/FuturePage';
 import TechnologyPage from '@/pages/TechnologyPage';
 import AdminPage from '@/pages/AdminPage';
+import HostingerPage from '@/pages/HostingerPage';
+import CloudAIPage from '@/pages/CloudAIPage';
 import { Toaster } from '@/components/ui/toaster';
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
           <Route path="/intelligence" element={<IntelligencePage />} />
           <Route path="/future" element={<FuturePage />} />
           <Route path="/technology" element={<TechnologyPage />} />
+          <Route path="/hostinger" element={<HostingerPage />} />
+          <Route path="/cloud-ai" element={<CloudAIPage />} />
         </Route>
         
         <Route path="/admin" element={<AdminPage />} />

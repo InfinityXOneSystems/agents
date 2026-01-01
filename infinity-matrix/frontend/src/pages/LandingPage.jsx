@@ -14,8 +14,7 @@ import {
   Users, 
   CheckCircle,
   BarChart,
-  Lock,
-  Hammer
+  Lock
 } from 'lucide-react';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
@@ -70,7 +69,7 @@ const LandingPage = () => {
 
   const testimonials = [
     {
-      quote: "The predictive accuracy of the Vision Cortex engine is terrifyingly good. It saved us millions in Q4 alone.",
+      quote: "The predictive accuracy of the Cortex engine is terrifyingly good. It saved us millions in Q4 alone.",
       author: "James K.",
       role: "CTO, FinTech Global"
     },
@@ -136,24 +135,22 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center"
+              className="flex flex-col sm:flex-row gap-4"
             >
               <Button 
                 size="lg"
-                onClick={() => navigate('/vision-cortex')}
-                className="bg-[#0066FF] hover:bg-[#0052cc] text-white px-8 py-6 text-lg rounded-full shadow-[0_0_20px_rgba(0,102,255,0.4)] hover:shadow-[0_0_40px_rgba(0,102,255,0.6)] transition-all flex items-center gap-3 w-full sm:w-auto justify-center"
+                onClick={() => navigate('/pricing')}
+                className="bg-[#0066FF] hover:bg-[#0052cc] text-white px-8 py-6 text-lg rounded-full shadow-[0_0_20px_rgba(0,102,255,0.4)] hover:shadow-[0_0_40px_rgba(0,102,255,0.6)] transition-all"
               >
-                <Brain size={20} />
-                Vision Cortex
+                Initialize Access
               </Button>
               <Button 
                 size="lg"
                 variant="outline"
-                onClick={() => navigate('/quantum-x-builder')}
-                className="border-[#0066FF]/30 text-[rgb(var(--foreground))] hover:bg-[#0066FF]/10 px-8 py-6 text-lg rounded-full flex items-center gap-3 w-full sm:w-auto justify-center"
+                onClick={() => document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' })}
+                className="border-[#0066FF]/30 text-[rgb(var(--foreground))] hover:bg-[#0066FF]/10 px-8 py-6 text-lg rounded-full"
               >
-                <Hammer size={20} />
-                Quantum X Builder
+                System Architecture
               </Button>
             </motion.div>
           </div>
@@ -224,7 +221,7 @@ const LandingPage = () => {
                 <div className="space-y-12">
                   {[
                     { title: "Connect", desc: "Integrate your data streams securely via our API gateway.", icon: <Zap /> },
-                    { title: "Process", desc: "Our neural Vision Cortex analyzes patterns across millions of data points.", icon: <Cpu /> },
+                    { title: "Process", desc: "Our neural cortex analyzes patterns across millions of data points.", icon: <Cpu /> },
                     { title: "Execute", desc: "Receive actionable intelligence or let agents act autonomously.", icon: <Activity /> }
                   ].map((step, i) => (
                     <div key={i} className="flex gap-6">

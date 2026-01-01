@@ -1,445 +1,455 @@
-import { useState, useEffect } from 'react'
-import { Helmet } from 'react-helmet'
-import { motion } from 'framer-motion'
-import { Zap, Brain, BarChart, AlertCircle, Radio, Server } from 'lucide-react'
-import axios from 'axios'
-import { Button } from '@/components/ui/button'
-import {
-  getOllamaModels,
-  processWithOllama,
-  getOllamaHealth,
-  findWorkingOllamaInstance,
-} from '@/lib/ollama-client'
+import React, { useState, useEffect } from 'react';
+import { MessageCircle, Loader, AlertCircle, CheckCircle, DollarSign, Zap } from 'lucide-react';
 
-const CLOUD_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const CloudAIPage = () => {
+  const [models, setModels] = useState([]);
+  const [health, setHealth] = useState(null);
+  const [prompt, setPrompt] = useState('');
+  const [selectedModel, setSelectedModel] = useState('gemini-pro');
+  const [taskType, setTaskType] = useState('general');
+  const [temperature, setTemperature] = useState(0.7);
+  const [maxTokens, setMaxTokens] = useState(1000);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [loadingModels, setLoadingModels] = useState(true);
 
-export default function CloudAIPage() {
-  // UI State
-  const [activeTab, setActiveTab] = useState('cloud')
-  
-  // Shared State
-  const [models, setModels] = useState([])
-  const [selectedModel, setSelectedModel] = useState('')
-  const [prompt, setPrompt] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState('')
-  const [error, setError] = useState('')
-  const [cost, setCost] = useState(0)
-  const [health, setHealth] = useState(null)
-  const [tokens, setTokens] = useState(0)
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
-  // Ollama specific state
-  const [ollamaHost, setOllamaHost] = useState(null)
-  const [ollamaAvailable, setOllamaAvailable] = useState(false)
-
+  // Load available models
   useEffect(() => {
-    initializeBackends()
-  }, [])
-
-  const initializeBackends = async () => {
-    // Initialize Cloud AI (Vertex) - Primary
-    await fetchCloudModels()
-    await fetchCloudHealth()
-
-    // Initialize Ollama - Secondary
-    const workingOllamaHost = await findWorkingOllamaInstance()
-    if (workingOllamaHost) {
-      setOllamaHost(workingOllamaHost)
-      setOllamaAvailable(true)
-      await fetchOllamaModels(workingOllamaHost)
-      await fetchOllamaHealth(workingOllamaHost)
-    }
-  }
-
-  // ============ CLOUD AI (VERTEX) FUNCTIONS ============
-
-  const fetchCloudModels = async () => {
-    try {
-      const response = await axios.get(`${CLOUD_API_URL}/cloud/models`)
-      const cloudModels = response.data.models || []
-      setModels(cloudModels)
-      if (cloudModels.length > 0 && activeTab === 'cloud') {
-        setSelectedModel(cloudModels[0].id)
+    const loadModels = async () => {
+      try {
+        setLoadingModels(true);
+        const response = await fetch(`${API_URL}/cloud/models`);
+        const data = await response.json();
+        setModels(data.models);
+      } catch (err) {
+        setError('Failed to load cloud models');
+        console.error('Error loading models:', err);
+      } finally {
+        setLoadingModels(false);
       }
-      return cloudModels
-    } catch (err) {
-      console.error('Error fetching cloud models:', err)
-      setError('Failed to load Vertex AI models. Make sure the backend is running on port 3001.')
-      return []
-    }
-  }
+    };
 
-  const fetchCloudHealth = async () => {
-    try {
-      const response = await axios.get(`${CLOUD_API_URL}/cloud/health`)
-      setHealth(response.data)
-    } catch (err) {
-      console.error('Error fetching cloud health:', err)
-    }
-  }
+    loadModels();
+  }, [API_URL]);
 
-  const processWithCloud = async (promptText, modelId) => {
-    try {
-      const response = await axios.post(`${CLOUD_API_URL}/cloud/ai/process`, {
-        prompt: promptText,
-        modelId: modelId,
-        config: {
-          temperature: 0.7,
-          maxTokens: 500
-        }
-      })
-
-      return {
-        result: response.data.result?.response || 'Processing complete',
-        cost: response.data.cost_estimate?.total_cost || 0,
-        tokens: response.data.usage?.total_tokens || 0,
-        source: 'cloud'
+  // Load health status
+  useEffect(() => {
+    const loadHealth = async () => {
+      try {
+        const response = await fetch(`${API_URL}/cloud/health`);
+        const data = await response.json();
+        setHealth(data.health);
+      } catch (err) {
+        console.error('Error loading health status:', err);
       }
-    } catch (err) {
-      throw new Error(err.response?.data?.error || 'Cloud processing failed')
-    }
-  }
+    };
 
-  // ============ OLLAMA FUNCTIONS ============
+    loadHealth();
+    const healthInterval = setInterval(loadHealth, 60000);
+    return () => clearInterval(healthInterval);
+  }, [API_URL]);
 
-  const fetchOllamaModels = async (host) => {
-    try {
-      const ollamaModels = await getOllamaModels(host)
-      if (activeTab === 'ollama') {
-        setModels(ollamaModels)
-        if (ollamaModels.length > 0) {
-          setSelectedModel(ollamaModels[0].id)
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching Ollama models:', err)
-    }
-  }
-
-  const fetchOllamaHealth = async (host) => {
-    try {
-      const healthData = await getOllamaHealth(host)
-      if (activeTab === 'ollama') {
-        setHealth(healthData)
-      }
-    } catch (err) {
-      console.error('Error fetching Ollama health:', err)
-    }
-  }
-
-  const processWithOllamaBackend = async (promptText, modelId) => {
-    try {
-      const result = await processWithOllama(
-        promptText,
-        modelId,
-        { temperature: 0.7, num_predict: 500 },
-        ollamaHost
-      )
-      return result
-    } catch (err) {
-      throw new Error('Ollama processing failed: ' + err.message)
-    }
-  }
-
-  // ============ UNIFIED PROCESSING ============
-
-  const handleProcess = async (e) => {
-    e.preventDefault()
+  const handleProcess = async () => {
     if (!prompt.trim()) {
-      setError('Please enter a prompt')
-      return
+      setError('Please enter a prompt');
+      return;
     }
-
-    setLoading(true)
-    setError('')
-    setResult('')
-    setCost(0)
-    setTokens(0)
 
     try {
-      let response
+      setLoading(true);
+      setError(null);
+      setResult(null);
 
-      if (activeTab === 'ollama' && ollamaAvailable) {
-        response = await processWithOllamaBackend(prompt, selectedModel)
-      } else {
-        response = await processWithCloud(prompt, selectedModel)
+      const response = await fetch(`${API_URL}/cloud/ai/process`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt,
+          model_id: selectedModel,
+          task_type: taskType,
+          temperature,
+          max_tokens: maxTokens,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to process prompt');
       }
 
-      setResult(response.result)
-      setCost(response.cost || 0)
-      setTokens(response.tokens || 0)
+      setResult(data.result);
     } catch (err) {
-      setError(err.message || 'Processing failed. Please try again.')
-      console.error('Error processing request:', err)
+      setError(err instanceof Error ? err.message : 'Unknown error occurred');
+      console.error('Error processing prompt:', err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleTabChange = async (tab) => {
-    setActiveTab(tab)
-    setModels([])
-    setSelectedModel('')
-    setResult('')
-    setCost(0)
-    setTokens(0)
-    setError('')
+  const taskTypes = ['general', 'code', 'chat', 'image', 'research'];
 
-    if (tab === 'cloud') {
-      const cloudModels = await fetchCloudModels()
-      if (cloudModels.length > 0) {
-        setSelectedModel(cloudModels[0].id)
-      }
-      await fetchCloudHealth()
-    } else if (tab === 'ollama' && ollamaHost) {
-      await fetchOllamaModels(ollamaHost)
-      await fetchOllamaHealth(ollamaHost)
-    }
-  }
+  const getCurrentModel = () => models.find((m) => m.id === selectedModel);
 
-  // ============ RENDER ============
-
-  const tabClasses = {
-    cloud: activeTab === 'cloud' 
-      ? 'border-blue-500 text-blue-600 bg-blue-50' 
-      : 'border-transparent text-gray-500 hover:border-gray-300',
-    ollama: activeTab === 'ollama' 
-      ? 'border-green-500 text-green-600 bg-green-50' 
-      : 'border-transparent text-gray-500 hover:border-gray-300'
+  if (loadingModels) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="flex items-center justify-center gap-2 text-gray-700">
+          <Loader className="w-6 h-6 animate-spin" />
+          <span>Loading cloud AI models...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
-      <Helmet>
-        <title>Cloud AI - InfinityXAI</title>
-        <meta name="description" content="Process requests with Vertex AI or local Ollama models" />
-      </Helmet>
-
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-40">
-          <div className="max-w-4xl mx-auto px-6 py-8">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg">
-                <Brain className="w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold">AI Processing</h1>
-                <p className="text-slate-400 mt-1">Vertex AI or Local Ollama</p>
-              </div>
-            </motion.div>
-
-            {/* Tab Navigation */}
-            <div className="flex gap-4 border-b border-slate-700">
-              <button
-                onClick={() => handleTabChange('cloud')}
-                className={`px-4 py-3 border-b-2 font-medium transition-all flex items-center gap-2 ${tabClasses.cloud}`}
-              >
-                <Server className="w-4 h-4" />
-                Vertex AI
-              </button>
-              {ollamaAvailable && (
-                <button
-                  onClick={() => handleTabChange('ollama')}
-                  className={`px-4 py-3 border-b-2 font-medium transition-all flex items-center gap-2 ${tabClasses.ollama}`}
-                >
-                  <Radio className="w-4 h-4" />
-                  Ollama
-                </button>
-              )}
-            </div>
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <Zap className="w-8 h-8 text-blue-600" />
+            <h1 className="text-4xl font-bold text-gray-900">Cloud AI Processing</h1>
           </div>
+          <p className="text-xl text-gray-600">
+            Leverage Google Vertex AI with intelligent model routing and fallback support
+          </p>
         </div>
 
-        {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          {/* Health Status */}
-          {health && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`mb-8 p-4 rounded-lg ${
-                activeTab === 'cloud'
-                  ? 'bg-blue-900/20 border border-blue-700/50'
-                  : 'bg-green-900/20 border border-green-700/50'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span className={activeTab === 'cloud' ? 'text-blue-300' : 'text-green-300'}>
-                  {activeTab === 'cloud' ? 'Vertex AI' : 'Ollama'} is{' '}
-                  {health.status === 'healthy' || health.status === 'operational' ? 'healthy' : 'degraded'}
-                </span>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Error Display */}
-          {error && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-8 p-4 bg-red-900/20 border border-red-700/50 rounded-lg flex items-start gap-3"
-            >
-              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <p className="text-red-200">{error}</p>
-            </motion.div>
-          )}
-
-          {/* Main Form */}
-          <motion.form
-            onSubmit={handleProcess}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="space-y-6"
+        {/* Health Status */}
+        {health && (
+          <div
+            className={`mb-8 p-6 rounded-lg border-2 ${
+              health.quotas.percentage_used > 80
+                ? 'bg-yellow-50 border-yellow-300'
+                : 'bg-green-50 border-green-300'
+            }`}
           >
+            <div className="flex items-start gap-4">
+              {health.quotas.percentage_used > 80 ? (
+                <AlertCircle className="w-6 h-6 text-yellow-600 mt-1 flex-shrink-0" />
+              ) : (
+                <CheckCircle className="w-6 h-6 text-green-600 mt-1 flex-shrink-0" />
+              )}
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold mb-4">Service Status</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div>
+                    <div className="text-sm text-gray-600">Status</div>
+                    <div className="font-semibold text-lg">{health.service}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-600">Uptime</div>
+                    <div className="font-semibold text-lg">{health.uptime_percentage}%</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-600">Monthly Budget</div>
+                    <div className="font-semibold text-lg">
+                      ${health.quotas.monthly_spent_usd.toFixed(2)} / ${health.quotas.monthly_budget_usd}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-600">Fallback</div>
+                    <div className="font-semibold text-lg">
+                      {health.fallback_available ? '✓ Ollama Ready' : '✗ Unavailable'}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all ${
+                        health.quotas.percentage_used > 80
+                          ? 'bg-yellow-500'
+                          : 'bg-green-500'
+                      }`}
+                      style={{ width: `${Math.min(health.quotas.percentage_used, 100)}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-sm text-gray-600 mt-2">
+                    Usage: {health.quotas.percentage_used.toFixed(1)}%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Configuration */}
+          <div className="lg:col-span-2 space-y-6">
             {/* Model Selection */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-3">
-                Select Model
-              </label>
-              <select
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
-              >
-                <option value="">Choose a model...</option>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <h2 className="text-lg font-semibold mb-4">Select Model</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {models.map((model) => (
-                  <option key={model.id} value={model.id}>
-                    {model.name} {model.size ? `(${model.size})` : ''}
-                  </option>
+                  <button
+                    key={model.id}
+                    onClick={() => setSelectedModel(model.id)}
+                    className={`p-4 border-2 rounded-lg text-left transition-all transform hover:scale-102 ${
+                      selectedModel === model.id
+                        ? 'border-blue-500 bg-blue-50 shadow-md'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="font-semibold text-gray-900">{model.name}</div>
+                    <div className="text-xs text-gray-600 mt-2">{model.description}</div>
+                    <div className="flex items-center gap-2 mt-3 text-xs font-medium text-blue-600">
+                      <DollarSign className="w-3 h-3" />
+                      <span>
+                        ${model.input_cost_per_1k}/1k in
+                      </span>
+                    </div>
+                  </button>
                 ))}
-              </select>
+              </div>
+            </div>
+
+            {/* Current Model Info */}
+            {getCurrentModel() && (
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+                <h3 className="font-semibold mb-4 text-gray-900">
+                  {getCurrentModel()?.name} Details
+                </h3>
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-sm font-medium text-gray-600">Best For:</div>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {getCurrentModel()?.best_for.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-xs font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-sm font-medium text-gray-600">Max Tokens</div>
+                      <div className="text-lg font-semibold text-gray-900">
+                        {getCurrentModel()?.max_tokens}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-gray-600">Output Cost</div>
+                      <div className="text-lg font-semibold text-gray-900">
+                        ${getCurrentModel()?.output_cost_per_1k}/1k tokens
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Task Type and Parameters */}
+            <div className="bg-white rounded-lg p-6 shadow-md space-y-4">
+              <h2 className="text-lg font-semibold mb-4">Configuration</h2>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Task Type
+                </label>
+                <select
+                  value={taskType}
+                  onChange={(e) => setTaskType(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  {taskTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Temperature: {temperature.toFixed(1)}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="2"
+                  step="0.1"
+                  value={temperature}
+                  onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                  className="w-full"
+                />
+                <div className="text-xs text-gray-500 mt-2">
+                  Lower = more deterministic, Higher = more creative
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Max Output Tokens: {maxTokens}
+                </label>
+                <input
+                  type="range"
+                  min="100"
+                  max="4000"
+                  step="100"
+                  value={maxTokens}
+                  onChange={(e) => setMaxTokens(parseInt(e.target.value))}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* Prompt Input */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-3">
-                Your Prompt
-              </label>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <h2 className="text-lg font-semibold mb-4">Your Prompt</h2>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder={`Enter your prompt for ${activeTab === 'cloud' ? 'Vertex AI' : 'Ollama'}...`}
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors h-32 resize-none"
+                placeholder="Enter your prompt here. Be specific for better results..."
+                className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows={8}
               />
-              <p className="text-xs text-slate-500 mt-2">
-                {prompt.length} characters
-              </p>
+              <div className="flex justify-between items-center mt-4">
+                <div className="text-sm text-gray-600">
+                  {prompt.length} characters (~{Math.ceil(prompt.length / 4)} tokens)
+                </div>
+              </div>
             </div>
 
+            {/* Error Display */}
+            {error && (
+              <div className="p-4 bg-red-50 border-2 border-red-300 rounded-lg flex gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-red-800">Error</h3>
+                  <p className="text-sm text-red-700 mt-1">{error}</p>
+                </div>
+              </div>
+            )}
+
             {/* Process Button */}
-            <Button
-              type="submit"
-              disabled={loading || !selectedModel || !prompt.trim()}
-              className={`w-full py-3 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 ${
-                activeTab === 'cloud'
-                  ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-slate-700 disabled:to-slate-700'
-                  : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-700 disabled:to-slate-700'
-              }`}
+            <button
+              onClick={handleProcess}
+              disabled={loading || !prompt.trim()}
+              className="w-full p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Processing...
+                  <Loader className="w-5 h-5 animate-spin" />
+                  Processing with Cloud AI...
                 </>
               ) : (
                 <>
-                  <Zap className="w-4 h-4" />
-                  Process with {activeTab === 'cloud' ? 'Vertex AI' : 'Ollama'}
+                  <Zap className="w-5 h-5" />
+                  Process with Cloud AI
                 </>
               )}
-            </Button>
-          </motion.form>
+            </button>
+          </div>
 
-          {/* Result Display */}
-          {result && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className={`mt-12 p-8 rounded-lg border ${
-                activeTab === 'cloud'
-                  ? 'bg-blue-900/10 border-blue-700/50'
-                  : 'bg-green-900/10 border-green-700/50'
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <BarChart className="w-5 h-5 text-slate-300" />
-                <h3 className="text-lg font-semibold">Result</h3>
-              </div>
+          {/* Right Column - Results */}
+          <div className="lg:col-span-1">
+            {result ? (
+              <div className="bg-white rounded-lg shadow-lg p-6 sticky top-4 max-h-[80vh] overflow-y-auto">
+                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  Result
+                </h2>
 
-              <div className="bg-slate-800/50 p-6 rounded-lg mb-4 max-h-96 overflow-y-auto">
-                <p className="text-slate-200 whitespace-pre-wrap">{result}</p>
-              </div>
+                <div className="space-y-4">
+                  {/* Model and timing */}
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <div className="text-xs text-gray-600 space-y-1">
+                      <div>
+                        <span className="font-medium">Model:</span> {result.model}
+                      </div>
+                      <div>
+                        <span className="font-medium">Time:</span> {result.processing_time_ms.toFixed(0)}ms
+                      </div>
+                      <div>
+                        <span className="font-medium">Date:</span>{' '}
+                        {new Date(result.timestamp).toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Cost/Token Info */}
-              <div className={`flex items-center gap-2 text-sm ${
-                activeTab === 'cloud' ? 'text-blue-300' : 'text-green-300'
-              }`}>
-                <div className="w-2 h-2 rounded-full" style={{
-                  backgroundColor: activeTab === 'cloud' ? '#60a5fa' : '#4ade80'
-                }}></div>
-                {activeTab === 'cloud' ? (
-                  <>
-                    <span className="font-semibold">${cost.toFixed(4)}</span>
-                    <span className="text-slate-400">estimated cost</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="font-semibold">{tokens} tokens</span>
-                    <span className="text-slate-400">used (local, no cost)</span>
-                  </>
-                )}
-              </div>
-            </motion.div>
-          )}
+                  {/* Response */}
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="text-sm font-medium text-gray-700 mb-2">Response</div>
+                    <div className="text-sm text-gray-900 whitespace-pre-wrap break-words">
+                      {result.response}
+                    </div>
+                  </div>
 
-          {/* Features Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-16 grid md:grid-cols-2 gap-6"
-          >
-            {/* Vertex AI Feature */}
-            <div className="p-6 bg-blue-900/20 border border-blue-700/50 rounded-lg hover:border-blue-600/80 transition-colors">
-              <div className="flex items-center gap-3 mb-3">
-                <Server className="w-5 h-5 text-blue-400" />
-                <h4 className="font-semibold text-blue-300">Vertex AI</h4>
-              </div>
-              <ul className="text-sm text-slate-300 space-y-2">
-                <li>✓ Advanced models (Gemini, PaLM)</li>
-                <li>✓ Enterprise-grade reliability</li>
-                <li>✓ Production-ready APIs</li>
-                <li>✓ Scalable inference</li>
-              </ul>
-            </div>
+                  {/* Usage Stats */}
+                  {result.usage && (
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <div className="text-sm font-medium text-gray-700 mb-2">Token Usage</div>
+                      <div className="grid grid-cols-3 gap-2 text-xs">
+                        <div className="text-center">
+                          <div className="text-gray-600">Input</div>
+                          <div className="font-semibold text-gray-900">
+                            {result.usage.input_tokens}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-gray-600">Output</div>
+                          <div className="font-semibold text-gray-900">
+                            {result.usage.output_tokens}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-gray-600">Total</div>
+                          <div className="font-semibold text-gray-900">
+                            {result.usage.total_tokens}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-            {/* Ollama Feature */}
-            <div className="p-6 bg-green-900/20 border border-green-700/50 rounded-lg hover:border-green-600/80 transition-colors">
-              <div className="flex items-center gap-3 mb-3">
-                <Radio className="w-5 h-5 text-green-400" />
-                <h4 className="font-semibold text-green-300">Ollama (Local)</h4>
+                  {/* Cost */}
+                  {result.cost_estimate && (
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-300">
+                      <div className="flex items-center gap-2 mb-2">
+                        <DollarSign className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-medium text-gray-700">Cost Estimate</span>
+                      </div>
+                      <div className="text-xs space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Input:</span>
+                          <span className="font-semibold">
+                            ${result.cost_estimate.input_cost.toFixed(6)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Output:</span>
+                          <span className="font-semibold">
+                            ${result.cost_estimate.output_cost.toFixed(6)}
+                          </span>
+                        </div>
+                        <div className="border-t border-green-200 pt-1 mt-1 flex justify-between font-semibold text-green-700">
+                          <span>Total:</span>
+                          <span>${result.cost_estimate.total_cost.toFixed(6)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-              <ul className="text-sm text-slate-300 space-y-2">
-                <li>✓ Runs locally with no cost</li>
-                <li>✓ Zero latency inference</li>
-                <li>✓ Complete data privacy</li>
-                <li>✓ Offline capability</li>
-              </ul>
-            </div>
-          </motion.div>
+            ) : (
+              <div className="bg-white rounded-lg shadow-md p-6 text-center text-gray-500">
+                <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                <p>Results will appear here</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-
+export default CloudAIPage;

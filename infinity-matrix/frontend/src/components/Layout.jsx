@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,9 +31,10 @@ const Layout = () => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/vision-cortex', label: 'Vision Cortex' },
-    { path: '/quantum-x-builder', label: 'Quantum X Builder' },
+    { path: '/vision-cortex', label: 'Cortex' },
+    { path: '/quantum-x-builder', label: 'Builder' },
     { path: '/intelligence', label: 'Intel' },
+    { path: '/hostinger', label: 'Hosting' },
     { path: '/pricing', label: 'Access' },
   ];
 
@@ -80,6 +80,8 @@ const Layout = () => {
                       strokeLinecap="round" 
                       strokeLinejoin="round"
                    />
+                   
+                   {/* The eye design elements have been removed as requested */}
                 </svg>
              </div>
           </Link>
@@ -91,7 +93,7 @@ const Layout = () => {
                 key={link.path}
                 to={link.path}
                 className={cn(
-                  "px-6 py-2 text-xs uppercase tracking-widest transition-all duration-300 relative group overflow-hidden rounded-full whitespace-nowrap", // Added whitespace-nowrap
+                  "px-6 py-2 text-xs uppercase tracking-widest transition-all duration-300 relative group overflow-hidden rounded-full",
                   location.pathname === link.path ? "text-[rgb(var(--foreground))]" : "text-[rgb(var(--light-gray-text))]/80 hover:text-[rgb(var(--foreground))]"
                 )}
               >
@@ -224,7 +226,7 @@ const Layout = () => {
             <h4 className="font-bold text-[rgb(var(--foreground))] mb-6 uppercase tracking-widest text-xs">Platform</h4>
             <ul className="space-y-4 text-[rgb(var(--light-gray-text))]">
               <li><Link to="/vision-cortex" className="hover:text-[#0066FF] transition-colors">Vision Cortex</Link></li>
-              <li><Link to="/quantum-x-builder" className="hover:text-[#0066FF] transition-colors">Quantum X Builder</Link></li>
+              <li><Link to="/quantum-x-builder" className="hover:text-[#0066FF] transition-colors">Quantum X</Link></li>
               <li><Link to="/pricing" className="hover:text-[#0066FF] transition-colors">Pricing</Link></li>
             </ul>
           </div>

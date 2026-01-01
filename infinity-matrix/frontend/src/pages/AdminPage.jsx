@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -13,16 +12,11 @@ import {
   LogOut, 
   Search,
   AlertTriangle,
-  FileText,
-  Brain,
-  Send,
-  Sparkles,
-  MessageSquare
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import BackgroundEnergy from '@/components/BackgroundEnergy';
-import { api } from '@/lib/api';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -60,7 +54,6 @@ const AdminPage = () => {
   const tabs = [
     { id: 'overview', label: 'System Status', icon: Activity },
     { id: 'users', label: 'Operatives', icon: Users },
-    { id: 'vision-cortex', label: 'Vision Cortex', icon: Brain },
     { id: 'content', label: 'Knowledge Base', icon: FileText },
     { id: 'config', label: 'Core Config', icon: Settings },
   ];
@@ -153,7 +146,6 @@ const AdminPage = () => {
             >
               {activeTab === 'overview' && <OverviewSection />}
               {activeTab === 'users' && <UsersSection />}
-              {activeTab === 'vision-cortex' && <VisionCortexSection />}
               {activeTab === 'content' && <ContentSection />}
               {activeTab === 'config' && <ConfigSection />}
             </motion.div>
@@ -269,111 +261,6 @@ const UsersSection = () => (
   </div>
 );
 
-const VisionCortexSection = () => {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: "Admin Link Established. Vision Cortex ready for system queries." }
-  ]);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSend = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMsg = input;
-    setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
-    setIsTyping(true);
-
-    try {
-      const response = await api.sendMessage(userMsg);
-      setMessages(prev => [...prev, response]);
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: `[SYSTEM ERROR] ${error.message}` }]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
-
-  return (
-    <div className="glass-panel rounded-3xl overflow-hidden border border-white/5 h-[600px] flex flex-col">
-      <div className="p-4 border-b border-white/5 flex items-center justify-between bg-white/5">
-        <div className="flex items-center gap-2">
-          <Brain size={18} className="text-[#0066FF]" />
-          <h3 className="text-sm font-bold tracking-wider">VISION CORTEX DIRECT LINK</h3>
-        </div>
-        <div className="flex items-center gap-2 text-[10px] text-green-400 font-mono uppercase">
-          <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-          Secure Channel
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
-        {messages.map((msg, idx) => (
-          <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border ${
-              msg.role === 'user' 
-                ? 'bg-[#0066FF]/20 border-[#0066FF]/30 text-[#0066FF]' 
-                : 'bg-white/10 border-white/10 text-white'
-            }`}>
-              {msg.role === 'user' ? <Users size={14} /> : <Brain size={14} />}
-            </div>
-            
-            <div className={`max-w-[80%] rounded-xl p-3 text-sm leading-relaxed ${
-              msg.role === 'user' 
-                ? 'bg-[#0066FF] text-white rounded-tr-sm' 
-                : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-sm'
-            }`}>
-              {msg.content}
-            </div>
-          </div>
-        ))}
-        {isTyping && (
-          <div className="flex gap-4">
-             <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                <Brain size={14} />
-             </div>
-             <div className="bg-white/5 border border-white/10 rounded-xl rounded-tl-sm p-3 flex gap-1 items-center h-10">
-                <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce"></span>
-             </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="p-4 border-t border-white/5 bg-white/5">
-        <form onSubmit={handleSend} className="relative">
-          <input 
-            type="text" 
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Input command sequence..."
-            className="w-full bg-black/50 border border-white/10 rounded-lg pl-4 pr-12 py-3 text-sm focus:outline-none focus:border-[#0066FF]/50 transition-colors text-white placeholder:text-white/20 font-mono"
-          />
-          <button 
-            type="submit"
-            disabled={!input.trim() || isTyping}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-[#0066FF] text-white hover:bg-[#0052cc] transition-colors disabled:opacity-50"
-          >
-            <Send size={14} />
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
-
 const ContentSection = () => (
   <div className="grid md:grid-cols-2 gap-8">
     <div className="glass-panel p-6 rounded-2xl border border-white/5">
@@ -397,7 +284,7 @@ const ContentSection = () => (
           <Database size={32} />
        </div>
        <h3 className="text-lg font-light mb-2">Content Repository</h3>
-       <p className="text-white/40 text-sm max-w-xs mb-6">Manage global assets, hero imagery, and textual data from the central Vision Cortex.</p>
+       <p className="text-white/40 text-sm max-w-xs mb-6">Manage global assets, hero imagery, and textual data from the central cortex.</p>
        <Button className="bg-[#0066FF] hover:bg-[#0052cc] text-white">Access CMS</Button>
     </div>
   </div>

@@ -1,43 +1,37 @@
-# Frontend Dockerfile - Optimized for Google Cloud Run
-# Multi-stage build for optimal size and performance
-
-FROM node:20-alpine as builder
+# Frontend - React/Vite Dashboard
+FROM node:18-alpine as builder
 
 WORKDIR /app
 
 # Copy package files
-COPY frontend/package.json frontend/package-lock.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 
-# Copy source code
-COPY frontend ./
+# Copy source
+COPY . .
 
-# Build React app
+# Build
 RUN npm run build
 
-# Production stage - Serve with Node.js
-FROM node:20-alpine
+# Production stage
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Install lightweight HTTP server
+# Install serve to run the built app
 RUN npm install -g serve
 
 # Copy built app from builder
 COPY --from=builder /app/dist ./dist
 
-# Environment configuration
-ENV PORT=3000
-ENV NODE_ENV=production
-
-# Expose port (Cloud Run uses 8080 by default, but we'll use 3000)
+# Expose port
 EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1
+  CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
 
-# Run static server
+# Start app
 CMD ["serve", "-s", "dist", "-l", "3000"]
