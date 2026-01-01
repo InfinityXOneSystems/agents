@@ -143,6 +143,44 @@ app.get("/hostinger/info", async (req, res) => {
   }
 });
 
+// Backwards-compatible ping route used by Hostinger previews and integrations
+app.get('/hostinger/ping', (req, res) => {
+  try {
+    res.json({
+      status: 'ok',
+      service: 'infinity-agents',
+      timestamp: new Date().toISOString(),
+      message: 'ping',
+    });
+  } catch (err) {
+    res.status(500).json({ error: String(err) });
+  }
+});
+
+/**
+ * Simple diagnostics endpoint for Hostinger to ping and verify backend reachability.
+ * Returns headers and a small echo payload so external services can validate network connectivity.
+ */
+app.all('/hostinger/ping', (req, res) => {
+  try {
+    console.log(`[HOSTINGER PING] ${req.method} ${req.path} from ${req.ip}`);
+    res.json({
+      status: 'ok',
+      service: 'infinity-agents',
+      timestamp: new Date().toISOString(),
+      method: req.method,
+      path: req.path,
+      headers: {
+        origin: req.headers.origin,
+        host: req.headers.host,
+        'x-forwarded-for': req.headers['x-forwarded-for'] || req.ip,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: String(err) });
+  }
+});
+
 /**
  * Execute research task
  */
@@ -468,7 +506,7 @@ app.get("/cloud/health", async (req, res) => {
       status: "success",
       health,
       recommendation:
-        health.percentage_used > 80
+        (health as any).quotas && (health as any).quotas.percentage_used > 80
           ? "Approaching budget limit, consider rate limiting"
           : "All systems operational",
     });
