@@ -4,6 +4,7 @@
  */
 
 import express, { Request, Response, NextFunction } from "express";
+import predictorRouter from "../../modules/predictor/index.js";
 import { AgentOrchestrator } from "../agents/orchestrator.js";
 import { ServiceHealth } from "../types/index.js";
 
@@ -37,6 +38,10 @@ app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
+
+
+// Mount predictor endpoints for /predict (financial prediction, trading, coin)
+app.use("/predict", predictorRouter);
 
 // ============================================================================
 // HEALTH CHECK ENDPOINTS

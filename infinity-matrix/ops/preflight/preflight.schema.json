@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "gate": {"type": "string"},
+    "status": {"type": "string", "enum": ["PASS", "WARN", "FAIL"]},
+    "timing": {"type": "number"},
+    "details": {"type": "object"}
+  },
+  "required": ["gate", "status", "timing", "details"]
+}

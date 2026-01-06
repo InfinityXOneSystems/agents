@@ -1,0 +1,42 @@
+{
+  "name": "infinityxai-launcher",
+  "displayName": "InfinityXAI Launcher",
+  "description": "InfinityXAI activity bar icon that launches the admin dashboard.",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": ">=1.70.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:infinityxai.openDashboard"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "infinityxai",
+          "title": "InfinityXAI",
+          "icon": "media/electric-triangle.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "infinityxai.openDashboard",
+        "title": "Open InfinityXAI Admin"
+      }
+    ],
+    "views": {
+      "infinityxai": [
+        {
+          "id": "infinityxai.dashboard",
+          "name": "InfinityXAI Admin"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {}
+}

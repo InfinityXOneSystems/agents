@@ -1,0 +1,13 @@
+# Exclude dev files from VSIX package
+.vscode/
+README.md
+*.psd
+*.ai
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.DS_Store
+node_modules/
+.git/
+.gitignore

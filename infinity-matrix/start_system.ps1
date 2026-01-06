@@ -23,9 +23,9 @@ if (-not $npmCheck) {
     exit 1
 }
 
-$pythonCheck = python --version 2>$null
+$pythonCheck = C:/AI/infinity-matrix/.venv/Scripts/python.exe --version 2>$null
 if (-not $pythonCheck) {
-    Write-Host "❌ Python not found. Please install Python 3.12+" -ForegroundColor Red
+    Write-Host "❌ Python not found in virtual environment. Please ensure the virtual environment is set up." -ForegroundColor Red
     exit 1
 }
 

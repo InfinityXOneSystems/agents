@@ -1,0 +1,45 @@
+[
+  {
+    "Port": 4000,
+    "Status": "✅ RUNNING",
+    "Component": "Backend Server"
+  },
+  {
+    "Count": 3,
+    "Status": "✅ RUNNING",
+    "Component": "Docker Services"
+  },
+  {
+    "Count": 8,
+    "Status": "✅ COMPLETE",
+    "Component": "Environment Variables"
+  },
+  {
+    "Component": "Google Cloud",
+    "Status": "⚠️ NOT INITIALIZED"
+  },
+  {
+    "Component": "Google Workspace",
+    "Status": "⚠️ NOT INITIALIZED"
+  },
+  {
+    "Component": "Vision Cortex",
+    "Status": "❌ NOT RESPONDING"
+  },
+  {
+    "Component": "LLM Providers",
+    "Status": "4/4 CONFIGURED"
+  },
+  {
+    "Component": "GitHub Integration",
+    "Status": "✅ CONFIGURED"
+  },
+  {
+    "Component": "Stripe Payments",
+    "Status": "⚠️ NOT CONFIGURED"
+  },
+  {
+    "Component": "Agent System",
+    "Status": "⚠️ AVAILABLE"
+  }
+]

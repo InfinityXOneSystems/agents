@@ -1,0 +1,15 @@
+# Admin manifest
+connectors:
+  github:
+    scopes: [repo, workflow, read:org]
+  gcp:
+    scopes: [cloud-platform, pubsub, sql-admin]
+  workspace:
+    scopes: [drive, sheets, docs]
+  hostinger:
+    scopes: [api]
+required_env:
+  - GITHUB_TOKEN
+  - GCP_CREDENTIALS
+  - WORKSPACE_KEY
+  - HOSTINGER_API_KEY

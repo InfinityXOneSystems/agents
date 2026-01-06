@@ -1,0 +1,18 @@
+# Frontend manifest
+routes:
+  - /
+  - /predict
+  - /simulate
+  - /decision-maker
+  - /admin
+onboarding:
+  questions:
+    - What is your goal?
+    - What is your timeline?
+    - What is your budget?
+    - What is your experience?
+    - What is your risk tolerance?
+nav:
+  primary: Vision Project
+feature_flags:
+  profitEngine: true

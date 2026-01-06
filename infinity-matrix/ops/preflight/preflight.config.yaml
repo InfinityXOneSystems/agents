@@ -1,0 +1,14 @@
+gates:
+  - 00-governance
+  - 10-local-quality
+  - 20-security
+  - 30-container
+  - 40-terraform
+  - 50-gcp
+  - 60-observability
+  - 70-product-flows
+  - 80-hostinger-frontend
+thresholds:
+  warn: 1
+  error: 1
+  failOn: warn

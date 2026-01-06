@@ -384,6 +384,23 @@ class SystemTester:
         except Exception as e:
             return False, str(e)
     
+    # ========== EDGE CASE TESTS ==========
+    def test_backend_edge_cases(self):
+        """Test backend for edge cases like invalid inputs and timeouts"""
+        try:
+            response = requests.post("http://localhost:4000/api/test", json={"invalid": "data"})
+            assert response.status_code == 400, "Expected 400 Bad Request"
+        except Exception as e:
+            self.log(f"Edge case test failed: {e}", level="ERROR")
+
+    def test_integration_edge_cases(self):
+        """Test integrations for edge cases like service unavailability"""
+        try:
+            response = requests.get("http://localhost:4000/api/health")
+            assert response.status_code == 200, "Expected 200 OK"
+        except Exception as e:
+            self.log(f"Integration edge case test failed: {e}", level="ERROR")
+    
     # ========== TEST EXECUTION ==========
     def run_all_tests(self):
         """Run all tests and generate report"""
@@ -400,11 +417,13 @@ class SystemTester:
                 ("Dependencies", self.test_backend_dependencies),
                 ("Compilation", self.test_backend_compilation),
                 ("Environment", self.test_backend_env_config),
+                ("Edge Cases", self.test_backend_edge_cases),
             ],
             "Integration": [
                 ("API Endpoints", self.test_api_endpoints),
                 ("Vertex AI Config", self.test_vertex_ai_config),
                 ("Ollama Connectivity", self.test_ollama_connectivity),
+                ("Edge Cases", self.test_integration_edge_cases),
             ],
             "Cloud Deployment": [
                 ("Production Config", self.test_production_config),

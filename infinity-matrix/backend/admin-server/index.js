@@ -1,21 +1,34 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const logger = require('pino')();
 const app = express();
+
+const DEFAULT_ADMIN_EMAIL = process.env.DEFAULT_ADMIN_EMAIL || 'admin@example.com';
+const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD || 'securepassword';
+
+// Replace hardcoded credentials with environment variables
+if (!process.env.DEFAULT_ADMIN_EMAIL || !process.env.DEFAULT_ADMIN_PASSWORD) {
+  console.error('Error: Admin credentials are not set in environment variables.');
+  process.exit(1);
+}
 
 // Middleware
 app.use(cors({
-  origin: '*', // Allow all origins for local development
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
   credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Request logging middleware
+// Structured logging middleware
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  logger.info({ method: req.method, path: req.path, timestamp: new Date().toISOString() });
   next();
 });
+
+// Serve admin dashboard at /admin
+app.use('/admin', express.static(path.join(__dirname, '../../frontend/admin')));
 
 // Import routes (only the ones that exist)
 const authRoutes = require('./routes/auth');
@@ -47,13 +60,15 @@ app.use('/api/gcp', gcpRoutes);
 app.use('/api/workspace', workspaceRoutes);
 app.use('/api/manus', manusRoutes); // Manus System Scraper & Integration
 
-// Health check endpoint
-app.get('/health', (req, res) => {
+// Enhanced health check endpoint
+app.get('/health', async (req, res) => {
+  // Simple health check without database for now
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     version: '1.0.0',
+    server: 'running',
   });
 });
 
@@ -116,8 +131,8 @@ app.listen(PORT, () => {
   console.log(`   • AI Agent Partners: Integrated ✅`);
   console.log(`   • Psychology AI:  Integrated ✅`);
   console.log(`\n🔑 Default Admin Credentials:`);
-  console.log(`   Email:    info@infinityxonesystems.com`);
-  console.log(`   Password: admin123`);
+  console.log(`   Email:    ${DEFAULT_ADMIN_EMAIL}`);
+  console.log(`   Password: [REDACTED]`);
   console.log(`\n🌐 Main Site: infinityxai.com - All capabilities consolidated`);
   console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`);
 });

@@ -70,3 +70,37 @@ credentials.json
 # BUT DO NOT IGNORE:
 # .infinity/ is CRITICAL system metadata - must be tracked
 # DO NOT ADD .infinity TO THIS FILE
+# Dependencies
+node_modules/
+__pycache__/
+.venv/
+venv/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env.local
+.env.production
+*.cred
+credentials/*.json
+
+# Temporary
+*.tmp
+.cache/

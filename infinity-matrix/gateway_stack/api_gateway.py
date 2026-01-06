@@ -6,7 +6,7 @@ from pydantic import BaseModel
 import os
 import json
 from google.cloud import storage, aiplatform  # type: ignore
-from flask import Flask, request, jsonify  # type: ignore
+from backend.admin_server.lib.unified_llm_system import UnifiedLLMSystem  # type: ignore
 
 # Securely load GCP credentials from environment variables
 GCP_CREDENTIALS_PATH = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "")
@@ -40,9 +40,15 @@ def health_check():
 
 @app.post("/api/login")
 def login(username: str = Body(...), password: str = Body(...)):
-    if username == "test_user" and password == "secure_password":
+    # Replace hardcoded credentials with secure authentication
+    if authenticate_user(username, password):
         return {"status": "success", "message": "Login successful"}
     return {"status": "failure", "message": "Invalid credentials"}
+
+# Add authentication function
+def authenticate_user(username: str, password: str) -> bool:
+    # Example: Validate against a secure database or authentication service
+    return username == os.getenv("DEFAULT_USERNAME") and password == os.getenv("DEFAULT_PASSWORD")
 
 @app.post("/api/agent-builder")
 def agent_builder(blueprint: Blueprint = Body(...)):
@@ -54,11 +60,35 @@ def process_payment(payment: PaymentRequest):
         return JSONResponse(content={"status": "success", "message": "Payment processed successfully", "payment": payment.model_dump()})
     return JSONResponse(content={"status": "failure", "message": "Invalid payment amount"}, status_code=400)
 
+# Initialize UnifiedLLMSystem
+llm_system = UnifiedLLMSystem()
+llm_system.initialize()
+
 @app.post("/api/llm")
 def llm_endpoint(request: LLMRequest):
-    return {"status": "success", "response": f"Processed prompt: {request.prompt}"}
+    try:
+        # Use UnifiedLLMSystem to process the prompt
+        response = llm_system.process_request({
+            "prompt": request.prompt,
+            "type": "creative"
+        })
+        return {"status": "success", "response": response}
+    except Exception as e:
+        return {"status": "failure", "error": str(e)}
 
-@app.get("/admin")
+# Add missing endpoints
+@app.post("/api/auth")
+def authenticate_user(username: str = Body(...), password: str = Body(...)):
+    if username == "admin" and password == "admin123":
+        return {"status": "success", "token": "mocked-jwt-token"}
+    return {"status": "failure", "message": "Invalid credentials"}
+
+@app.get("/api/chat")
+def chat_endpoint():
+    return {"message": "Chat endpoint is under construction."}
+
+# Standardize `/admin` to `/api/admin`
+@app.get("/api/admin")
 def read_admin():
     return {"message": "Admin route is functional."}
 
@@ -169,34 +199,31 @@ def test_bucket_permissions(bucket_name: str) -> None:
             proof_file.write(f"Error with bucket {bucket_name}: {str(e)}\n")
         raise
 
-# Initialize Flask app
-flask_app = Flask(__name__)
-
 # Load agent registry
 with open(".prooftest/agent_registry.json", "r") as f:
     agent_registry = json.load(f)
 
 # Endpoint to list all agents
-@flask_app.route("/agents", methods=["GET"])
-def list_agents():
-    return jsonify(agent_registry)
+# @flask_app.route("/agents", methods=["GET"])
+# def list_agents():
+#     return jsonify(agent_registry)
 
 # Endpoint to interact with an agent
-@flask_app.route("/agents/<agent_name>", methods=["POST"])
-def interact_with_agent(agent_name):
-    data = request.json
-    prompt = data.get("prompt", "")
+# @flask_app.route("/agents/<agent_name>", methods=["POST"])
+# def interact_with_agent(agent_name):
+#     data = request.json
+#     prompt = data.get("prompt", "")
 
-    # Log interaction
-    interaction_log = {
-        "agent": agent_name,
-        "prompt": prompt,
-        "response": f"Simulated response from {agent_name}"
-    }
-    with open(".prooftest/agent_llm_interactions.json", "a") as log_file:
-        log_file.write(json.dumps(interaction_log) + "\n")
+#     # Log interaction
+#     interaction_log = {
+#         "agent": agent_name,
+#         "prompt": prompt,
+#         "response": f"Simulated response from {agent_name}"
+#     }
+#     with open(".prooftest/agent_llm_interactions.json", "a") as log_file:
+#         log_file.write(json.dumps(interaction_log) + "\n")
 
-    return jsonify({"message": f"Prompt sent to {agent_name}", "response": interaction_log["response"]})
+#     return jsonify({"message": f"Prompt sent to {agent_name}", "response": interaction_log["response"]})
 
 def validate_billing_iam():
     try:
@@ -218,7 +245,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-    flask_app.run(debug=True)
 
 def scrape_and_store_vertex_ai_models():
     """

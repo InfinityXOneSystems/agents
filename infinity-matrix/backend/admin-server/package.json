@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@google-cloud/bigquery": "^8.1.1",
+    "@google-cloud/firestore": "^8.0.0",
+    "@google-cloud/storage": "^7.18.0",
+    "@google-cloud/vertexai": "^1.10.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "googleapis": "^169.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "pino": "^10.1.0"
+  }
+}

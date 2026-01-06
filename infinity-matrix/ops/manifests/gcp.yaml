@@ -1,0 +1,10 @@
+# GCP desired state manifest
+project_id: your-gcp-project
+region: us-central1
+services:
+  - name: cloudrun-service
+    health_endpoint: /health
+pubsub:
+  topics: [example-topic]
+sql:
+  instances: [example-sql]

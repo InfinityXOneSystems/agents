@@ -18,10 +18,16 @@
     "dev": "concurrently \"npm run start:orchestration\" \"cd ai_stack && python system_health_check.py\""
   },
   "jest": {
-    "moduleDirectories": ["node_modules", "auto_builder/shared_components"]
+    "moduleDirectories": [
+      "node_modules",
+      "auto_builder/shared_components"
+    ]
   },
   "devDependencies": {
-    "jest": "^29.0.0",
-    "concurrently": "^8.0.0"
+    "concurrently": "^8.0.0",
+    "jest": "^29.0.0"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.57.0"
   }
 }

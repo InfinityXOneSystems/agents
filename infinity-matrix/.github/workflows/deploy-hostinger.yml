@@ -1,0 +1,26 @@
+name: Deploy to Hostinger
+on:
+  push:
+    branches:
+      - main
+      - sync-with-copilot-orchestrator
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+      - name: Deploy to Hostinger
+        env:
+          HOSTINGER_API_KEY: ${{ secrets.HOSTINGER_API_KEY }}
+        run: |
+          python ai_stack/hostinger/deploy_to_hostinger.py

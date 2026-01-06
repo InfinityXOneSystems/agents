@@ -16,7 +16,7 @@ const users = [
   }
 ];
 
-// Authentication middleware
+// Enhanced authentication middleware
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -27,7 +27,8 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(403).json({ error: 'Invalid or expired token' });
+      const errorMessage = err.name === 'TokenExpiredError' ? 'Token has expired' : 'Invalid token';
+      return res.status(403).json({ error: errorMessage });
     }
     req.user = user;
     next();
@@ -85,6 +86,19 @@ router.post('/login', (req, res) => {
       name: user.name
     }
   });
+});
+
+// POST /login - User login (alternative)
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Replace with real user validation
+  if (username === 'admin' && password === 'password') {
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ success: true, token });
+  } else {
+    res.status(401).json({ success: false, message: 'Invalid credentials' });
+  }
 });
 
 // POST /register - User registration
@@ -145,6 +159,14 @@ router.get('/me', authenticateToken, (req, res) => {
 // POST /logout - User logout (client-side token removal)
 router.post('/logout', authenticateToken, (req, res) => {
   res.json({ message: 'Logged out successfully' });
+});
+
+// Add missing GET endpoint for '/api/auth'
+router.get('/api/auth', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Auth endpoint is active',
+  });
 });
 
 module.exports = router;
