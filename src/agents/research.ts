@@ -91,7 +91,7 @@ export class ResearchAgent extends EventEmitter {
   /**
    * Simulate research process (placeholder)
    */
-  private async simulateResearch(task: ResearchTask): Promise<void> {
+  private async simulateResearch(_task: ResearchTask): Promise<void> {
     // Simulate processing time
     const processingTime = Math.random() * 2000 + 1000; // 1-3 seconds
     await new Promise((resolve) => setTimeout(resolve, processingTime));

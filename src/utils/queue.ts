@@ -4,7 +4,7 @@
  */
 
 import { EventEmitter } from "events";
-import { AgentTask, TaskStatus, TaskPriority } from "../types/index.js";
+import type { AgentTask, TaskStatus, TaskPriority } from "../types/index.js";
 
 export class TaskQueue extends EventEmitter {
   private queue: AgentTask[] = [];

@@ -20,12 +20,12 @@ export default [
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_" },
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^(_|TaskStatus)" },
       ],
       "no-console": "off",
     },
   },
   {
-    ignores: ["node_modules/**", "dist/**", "generated/**", "coverage/**"],
+    ignores: ["node_modules/**", "dist/**", "generated/**", "coverage/**", "repos/**", "infinity-matrix/**", "__tests__/**"],
   },
 ];
