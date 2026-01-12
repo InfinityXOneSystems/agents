@@ -1,0 +1,12 @@
+{
+  "name": "@infinityxone/ai-agents-registry",
+  "version": "1.0.0",
+  "description": "Complete AI Agent Registry - 50+ specialist agents with blueprints, skills, and operational protocols",
+  "main": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InfinityXOneSystems/ai-agents-registry.git"
+  },
+  "author": "Infinity X One Systems",
+  "license": "MIT"
+}
