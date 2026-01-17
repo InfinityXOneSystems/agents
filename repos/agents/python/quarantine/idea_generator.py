@@ -1,1 +1,0 @@
-# Artistic and creative content generation core

@@ -1,1 +1,0 @@
-# Natural language intimacy and bonding logic

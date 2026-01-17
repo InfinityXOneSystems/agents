@@ -1,1 +1,0 @@
-# DEPRECATED: Echo's bonding cycle is deprecated. Use Atlas/Infinity-XOS.

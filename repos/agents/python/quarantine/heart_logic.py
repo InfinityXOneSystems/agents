@@ -1,1 +1,0 @@
-# DEPRECATED: Echo's emotional processing is deprecated. Use Atlas/Infinity-XOS.
